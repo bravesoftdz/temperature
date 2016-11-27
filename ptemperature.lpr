@@ -4,26 +4,23 @@ program pTemperature;
 uses
   GlobalConst,
   GlobalTypes,
-  Devices,
+  GlobalConfig,
   Platform,
-  Threads,
-  Console,
-  Framebuffer,
   BCM2837,
   BCM2710,
   SysUtils,
-  GlobalConfig,
   Logging,
   Classes,
   FileSystem,
   FATFS,
-  MMC;
+  MMC,
+  Crt;
 
 var
- WindowHandle:TWindowHandle;
  SdIsInserted:Boolean;
  Temperature:Double;
  TemperatureDirection:Double;
+ StartTime:LongWord;
 
 function BoolToStr(X:Boolean):String;
 begin
@@ -73,11 +70,6 @@ begin
   end;
 end;
 
-procedure WriteLn(Line:String);
-begin
- ConsoleWindowWriteLn(WindowHandle,Line);
-end;
-
 procedure RestoreMissionControl(Name:String);
 var
  Path:String;
@@ -88,13 +80,14 @@ begin
 end;
 
 begin
- WindowHandle:=ConsoleWindowCreate(ConsoleDeviceGetDefault,CONSOLE_POSITION_FULLSCREEN,True);
- WriteLn('Started');
+ LoggingDeviceSetTarget(LoggingDeviceFindByType(LOGGING_TYPE_FILE),'c:\ultibo.log');
+ //The next line normally isn't required but FileSysLoggingStart currently has
+ // a bug that causes it to fail if no target is specified on the command line
+ LoggingDeviceStart(LoggingDeviceFindByType(LOGGING_TYPE_FILE)); 
+ LoggingDeviceSetDefault(LoggingDeviceFindByType(LOGGING_TYPE_FILE));
 
-// FILESYS_REGISTER_LOGGING:=True;
-// FILESYS_LOGGING_DEFAULT:=True;
-// FILESYS_LOGGING_FILE:='c:\ultibo.log';
-// LoggingDeviceSetDefault(LoggingDeviceFindByType(LOGGING_TYPE_FILE));
+ StartTime:=ClockGetCount;
+ WriteLn('Started');
 
  Temperature:=0;
  TemperatureDirection:=0;
@@ -106,10 +99,11 @@ begin
  RestoreMissionControl('kernel7.img');
  LoggingOutput('done updating kernel7.img');
 
- while True do
+ while ClockGetCount < StartTime + 30 * 1000*1000 do
   begin
    CheckSd;
    CheckTemperature;
    Sleep(100);
   end;
+ SystemRestart(100);
 end.
