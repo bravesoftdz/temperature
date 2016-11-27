@@ -1,5 +1,4 @@
 program pTemperature;
-
 {$mode objfpc}{$H+}
 
 uses
@@ -18,12 +17,11 @@ uses
   Classes,
   FileSystem,
   FATFS,
-  MMC,
-  Services;
+  MMC;
 
 var
  WindowHandle:TWindowHandle;
- SdInserted:Boolean;
+ SdIsInserted:Boolean;
  Temperature:Double;
  TemperatureDirection:Double;
 
@@ -37,11 +35,11 @@ end;
 
 procedure CheckSd;
 var
- Previous:Boolean;
+ SdWasNotInserted:Boolean;
 begin
- Previous:=SdInserted;
- SdInserted:=DirectoryExists('c:');
- if not Previous and SdInserted then
+ SdWasNotInserted:=not SdIsInserted;
+ SdIsInserted:=DirectoryExists('c:');
+ if SdWasNotInserted and SdIsInserted then
   SystemRestart(100);
 end;
 
@@ -65,10 +63,10 @@ const
 begin
  Next:=TemperatureGetCurrent(0) / 1000.0;
  Delta:=Next - Temperature;
- if ((Delta <> 0) and (Signum(Delta) = Signum(TemperatureDirection))) or (Abs(Delta) > Hysteresis) then
+ if ((Delta <> 0) and (Signum(Delta) = TemperatureDirection)) or (Abs(Delta) > Hysteresis) then
   begin
    Temperature:=Next;
-   TemperatureDirection:=Delta;
+   TemperatureDirection:=Signum(Delta);
    Line:=Format('Temperature %6.3f',[Temperature]);
    LoggingOutput(Line);
    WriteLn(Line);
@@ -80,24 +78,32 @@ begin
  ConsoleWindowWriteLn(WindowHandle,Line);
 end;
 
+procedure RestoreMissionControl(Name:String);
+var
+ Path:String;
+begin
+ Path:='c:\' + Name;
+ FSDeleteFile(Path);
+ FSRenameFile(Path + '.missioncontrol',Path);
+end;
+
 begin
  WindowHandle:=ConsoleWindowCreate(ConsoleDeviceGetDefault,CONSOLE_POSITION_FULLSCREEN,True);
  WriteLn('Started');
 
- FILESYS_REGISTER_LOGGING:=True;
- FILESYS_LOGGING_DEFAULT:=True;
- FILESYS_LOGGING_FILE:='c:\ultibo.log';
- LoggingDeviceSetDefault(LoggingDeviceFindByType(LOGGING_TYPE_FILE));
+// FILESYS_REGISTER_LOGGING:=True;
+// FILESYS_LOGGING_DEFAULT:=True;
+// FILESYS_LOGGING_FILE:='c:\ultibo.log';
+// LoggingDeviceSetDefault(LoggingDeviceFindByType(LOGGING_TYPE_FILE));
 
  Temperature:=0;
  TemperatureDirection:=0;
  LoggingOutput('Updating sd card');
  while not DirectoryExists('c:') do
   Sleep(100);
- SdInserted:=True;
- FSDeleteFile('c:\cmdline.txt');
- FSDeleteFile('c:\kernel7.img');
- FSRenameFile('c:\kernel7.img.raspbian','c:\kernel7.img');
+ SdIsInserted:=True;
+ RestoreMissionControl('cmdline.txt');
+ RestoreMissionControl('kernel7.img');
  LoggingOutput('done updating kernel7.img');
 
  while True do

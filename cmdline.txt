@@ -1,0 +1,1 @@
+FILESYS_LOGGING_FILE=c:\ultibo.log
