@@ -1,0 +1,12 @@
+version: 2
+executorType: docker
+containerInfo:
+  - image:ubuntu:14.04
+    cmd: ["/bin/bash"]
+stages:
+  build:
+    workDir: ~/temperature
+    steps:
+      - type: shell
+        shell: /bin/bash
+        command: echo temperature at $(date)
