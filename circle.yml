@@ -1,7 +1,7 @@
 version: 2
 executorType: docker
 containerInfo:
-  - image: circleci/build-image:ubuntu-14.04-XL-783-8f4b56f
+  - image: markfirmware/ufpc-do-not-use
     cmd: ["/bin/bash"]
 stages:
   build:
