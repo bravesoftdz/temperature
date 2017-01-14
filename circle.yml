@@ -10,4 +10,4 @@ stages:
       - type: checkout
       - type: shell
         shell: /bin/bash
-        command: echo temperature at $(date)
+        command: fpc -i
