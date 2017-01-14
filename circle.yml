@@ -10,4 +10,4 @@ stages:
       - type: checkout
       - type: shell
         shell: /bin/bash
-        command: fpc -i
+        command: fpc -i && ls -lt
