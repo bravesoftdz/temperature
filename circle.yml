@@ -1,7 +1,7 @@
 version: 2
 executorType: docker
 containerInfo:
-  - image: markfirmware/ufpc-circleci2-testing-18
+  - image: markfirmware/ufpc-circleci2-testing-17
     cmd: ["/bin/bash"]
 stages:
   build:
@@ -10,4 +10,4 @@ stages:
       - type: checkout
       - type: shell
         shell: /bin/bash
-        command: fpc -i && ls -lt ~/ultibo/core/fpc/bin && echo $PATH && which fpc
+        command: echo $PATH && which fpc
