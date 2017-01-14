@@ -1,7 +1,7 @@
 version: 2
 executorType: docker
 containerInfo:
-  - image: markfirmware/ufpc
+  - image: ubuntu:14.04
     cmd: ["/bin/bash"]
 stages:
   build:
@@ -10,4 +10,4 @@ stages:
       - type: checkout
       - type: shell
         shell: /bin/bash
-        command: fpc -i
+        command: git status
