@@ -1,8 +1,7 @@
 version: 2
 executorType: docker
 containerInfo:
-  - image: markfirmware/ufpc
-# circleci/build-image:ubuntu-14.04-XL-783-8f4b56f
+  - image: circleci/build-image:ubuntu-14.04-XL-783-8f4b56f
     cmd: ["/bin/bash"]
 stages:
   build:
@@ -11,4 +10,4 @@ stages:
       - type: checkout
       - type: shell
         shell: /bin/bash
-        command: fpc -i
+        command: echo temperature at $(date)
