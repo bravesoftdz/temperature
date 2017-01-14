@@ -1,6 +1,6 @@
 version: 2
 executorType: docker
-containerInfo
+containerInfo:
   - image: markfirmware/ufpc-circleci2-testing-12
     cmd: ["/bin/bash"]
 stages:
