@@ -1,7 +1,7 @@
 version: 2
 executorType: docker
 containerInfo:
-  - image: markfirmware/ufpc-do-not-use2
+  - image: markfirmware/ufpc-do-not-use3
     cmd: ["/bin/bash"]
 stages:
   build:
