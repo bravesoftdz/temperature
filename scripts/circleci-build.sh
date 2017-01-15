@@ -9,4 +9,4 @@ cp -a kernel.bin artifacts/kernels && \
 fpc -dTARGET_RPI3 -B -Tultibo -O2 -Parm -CpARMV7A -WpRPI3B @/root/ultibo/core/fpc/bin/rpi3.cfg \
  ptemperature.lpr && \
 cp -a kernel7.img artifacts/kernels && \
-cp -a run-qemu artifacts/kernels
+cp -a ../scripts/run-qemu artifacts/kernels
