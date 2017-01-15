@@ -6,8 +6,8 @@ uses
   GlobalTypes,
   GlobalConfig,
   Platform,
-  BCM2837,
-  BCM2710,
+  {$ifdef TARGET_QEMUARM7A} QEMUVPB,          {$endif}
+  {$ifdef TARGET_RPI3}      BCM2837, BCM2710, {$endif}
   SysUtils,
   Logging,
   Classes,
