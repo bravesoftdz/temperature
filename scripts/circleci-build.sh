@@ -1,5 +1,6 @@
 #!/bin/bash
 set -x
+cd src
 rm -rf artifacts/ *.bin *.elf *.img *.o *.ppu
 mkdir -p artifacts/kernels artifacts/build-test-output
 fpc -dTARGET_QEMUARM7A -B -Tultibo -O2 -Parm -CpARMV7A -WpQEMUVPB @/root/ultibo/core/fpc/bin/qemuvpb.cfg \

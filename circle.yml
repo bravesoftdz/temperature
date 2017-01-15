@@ -9,10 +9,10 @@ stages:
       - type: checkout
       - name: build
         type: shell
-        command: ./docker-build.sh
+        command: scripts/-build.sh
       - name: qemu test
         type: shell
-        command: ./scripts/linux-test-with-qemu.sh && mv build-test-output artifacts
+        command: scripts/linux-test-with-qemu.sh && mv build-test-output artifacts
       - name: save artifacts
         type: artifacts-store
         path: artifacts

@@ -11,34 +11,12 @@ uses
   SysUtils,
   Logging,
   Classes,
-  FileSystem,
-  FATFS,
-  MMC,
   Crt;
 
 var
- SdIsInserted:Boolean;
  Temperature:Double;
  TemperatureDirection:Double;
  StartTime:LongWord;
-
-function BoolToStr(X:Boolean):String;
-begin
- if X then
-  BoolToStr:='True'
- else
-  BoolToStr:='False';
-end;
-
-procedure CheckSd;
-var
- SdWasNotInserted:Boolean;
-begin
- SdWasNotInserted:=not SdIsInserted;
- SdIsInserted:=DirectoryExists('c:');
- if SdWasNotInserted and SdIsInserted then
-  SystemRestart(100);
-end;
 
 function Signum(X:Double):Double;
 begin
@@ -70,20 +48,8 @@ begin
   end;
 end;
 
-procedure RestoreMissionControl(Name:String);
-var
- Path:String;
 begin
- Path:='c:\' + Name;
- FSDeleteFile(Path);
- FSRenameFile(Path + '.missioncontrol',Path);
-end;
-
-begin
- LoggingDeviceSetTarget(LoggingDeviceFindByType(LOGGING_TYPE_FILE),'c:\ultibo.log');
- //The next line normally isn't required but FileSysLoggingStart currently has
- // a bug that causes it to fail if no target is specified on the command line
- LoggingDeviceStart(LoggingDeviceFindByType(LOGGING_TYPE_FILE)); 
+ LoggingDeviceSetTarget(LoggingDeviceFindByType(LOGGING_TYPE_FILE),'c:\ultibo-temperature.log');
  LoggingDeviceSetDefault(LoggingDeviceFindByType(LOGGING_TYPE_FILE));
 
  StartTime:=ClockGetCount;
@@ -91,17 +57,9 @@ begin
 
  Temperature:=0;
  TemperatureDirection:=0;
- LoggingOutput('Updating sd card');
- while not DirectoryExists('c:') do
-  Sleep(100);
- SdIsInserted:=True;
- RestoreMissionControl('cmdline.txt');
- RestoreMissionControl('kernel7.img');
- LoggingOutput('done updating kernel7.img');
 
  while ClockGetCount < StartTime + 30 * 1000*1000 do
   begin
-   CheckSd;
    CheckTemperature;
    Sleep(100);
   end;
