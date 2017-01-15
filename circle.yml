@@ -9,7 +9,7 @@ stages:
       - type: checkout
       - name: build
         type: shell
-        command: scripts/-build.sh
+        command: scripts/circleci-build.sh
       - name: qemu test
         type: shell
         command: scripts/linux-test-with-qemu.sh && mv build-test-output artifacts
