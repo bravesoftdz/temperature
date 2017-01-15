@@ -1,7 +1,7 @@
 version: 2
 executorType: docker
 containerInfo:
-  - image: markfirmware/ufpc-circleci2-testing-25
+  - image: markfirmware/ufpc-circleci2-testing-26
 stages:
   build:
     workDir: ~/temperature
