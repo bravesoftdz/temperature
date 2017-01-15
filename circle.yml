@@ -10,5 +10,5 @@ stages:
       - type: shell
         command: ./docker-build.sh
       - type: artifacts-store
-        path: kernel.bin
+        path: artifacts
         destination: temperature
