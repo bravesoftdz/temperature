@@ -6,7 +6,7 @@ uses
   GlobalTypes,
   GlobalConfig,
   Platform,
-  {$ifdef TARGET_QEMUARM7A} QEMUVPB,          {$endif}
+  {$ifdef TARGET_QEMUARM7A} QEMUVersatilePB,  {$endif}
   {$ifdef TARGET_RPI3}      BCM2837, BCM2710, {$endif}
   SysUtils,
   Logging,
