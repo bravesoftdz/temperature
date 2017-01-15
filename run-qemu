@@ -1,0 +1,114 @@
+#!/usr/bin/python
+
+import os, parse, select, shutil, subprocess, sys
+from time import sleep
+
+outputfolder = 'run-qemu-output'
+
+class PtyChannel:
+    def __init__ (self, name, pty):
+        print name, pty
+        self.name = name
+        self.pty = pty
+    def open (self):
+        self.ptyread = open (self.pty, 'r')
+        self.ptywrite = open (self.pty, 'w')
+        self.logfile = open ('{}/{}.txt'.format (outputfolder, self.name), 'a')
+    def readline (self):
+        line = self.ptyread.readline ()
+        print line
+        self.logfile.write (line)
+    def writeline (self, line):
+        print '{}>>>>{}'.format (self.name, line)
+        self.logfile.write (line + '\n')
+        self.ptywrite.write (line + '\n')
+    def drain (self):
+        while ([], [], []) != select.select ([self.ptyread], [], [], 0):
+            sleep (0.001)
+            data = self.ptyread.read (1)
+            self.logfile.write (data)
+            if data == "":
+                break
+    def finishquit (self, process):
+        while process.returncode == None:
+            sleep (0.001)
+            process.poll ()
+            if ([], [], []) != select.select ([self.ptyread], [], [], 0):
+                sys.stdout.write (self.ptyread.read (1))
+    def close (self):
+        self.logfile.close ()
+        self.ptyread.close ()
+        self.ptywrite.close ()
+
+def bash (lines):
+    for line in lines:
+        print 'bash >>', line
+        subprocess.check_call (line, shell=True)
+
+bash (['rm -rf {}/'.format (outputfolder),
+       'mkdir -p {}'.format (outputfolder)])
+
+qemuprocess = subprocess.Popen (["qemu-system-arm",
+                                 "-M", "versatilepb",
+                                 "-cpu", "cortex-a8",
+                                 "-kernel", "kernel.bin",
+                                 "-m", "256M",
+                                 "-usb",
+                                 "-display", "none",
+                                 "-monitor", "pty",
+                                 "-serial", "pty",
+                                 "-serial", "pty"],
+                                stdout=subprocess.PIPE,
+                                stderr=subprocess.PIPE)
+
+def getptys ():
+    global monitor, applog, appapi
+    for i in range (10):
+        line = qemuprocess.stderr.readline ()
+        print line
+        p = parse.parse ('char device redirected to {} (label {})', line)
+        if p:
+            if p.fixed [1] == 'compat_monitor0':
+                monitor = PtyChannel ('monitor', p.fixed [0])
+            if p.fixed [1] == 'serial0':
+                applog = PtyChannel ('appseriallog', p.fixed [0])
+            if p.fixed [1] == 'serial1':
+                appapi = PtyChannel ('appserialapi', p.fixed [0])
+
+# monitor = PtyChannel ('monitor', '/dev/pts/1')
+# applog  = PtyChannel ('appseriallog', '/dev/pts/2')
+# appapi  = PtyChannel ('appserialapi', '/dev/pts/3')
+
+getptys ()
+
+sleep (1)
+monitor.open ()
+applog.open ()
+appapi.open ()
+
+applog.drain ()
+monitor.writeline ('screendump {}/screen-01.ppm'.format (outputfolder))
+sleep (7)
+monitor.writeline ('screendump {}/screen-02.ppm'.format (outputfolder))
+
+sleep (2)
+applog.drain ()
+monitor.drain ()
+monitor.writeline ('quit')
+sleep (2)
+applog.drain ()
+monitor.drain ()
+monitor.finishquit (qemuprocess)
+
+print
+print 'qemu return code', qemuprocess.returncode
+
+monitor.close ()
+applog.close ()
+appapi.close ()
+
+bash (['convert {0}/screen-01.ppm {0}/screen-01.png'.format (outputfolder),
+       'convert {0}/screen-02.ppm {0}/screen-02.png'.format (outputfolder),
+       'rm {}/*.ppm'.format (outputfolder),
+       'file {}/*'.format (outputfolder),
+       'cat {}/appseriallog.txt'.format (outputfolder)])

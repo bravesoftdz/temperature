@@ -7,8 +7,13 @@ stages:
     workDir: ~/temperature
     steps:
       - type: checkout
-      - type: shell
+      - name: build
+        type: shell
         command: ./docker-build.sh
-      - type: artifacts-store
+      - name: qemu test
+        type: shell
+        command: ./run-qemu && mv run-qemu-output artifacts
+      - name: save artifacts
+        type: artifacts-store
         path: artifacts
         destination: temperature
