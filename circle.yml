@@ -12,7 +12,7 @@ stages:
         command: ./docker-build.sh
       - name: qemu test
         type: shell
-        command: ./run-qemu && mv run-qemu-output artifacts
+        command: ./scripts/linux-test-with-qemu.sh && mv build-test-output artifacts
       - name: save artifacts
         type: artifacts-store
         path: artifacts
