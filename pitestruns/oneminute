@@ -1,0 +1,5 @@
+unit TestScript; interface implementation initialization
+ RequireRpi3;
+ Sleep(60);
+ QuitApp;
+end.
