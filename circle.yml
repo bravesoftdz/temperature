@@ -4,7 +4,7 @@ containerInfo:
   - image: markfirmware/ufpc-circleci2-testing-26
 stages:
   build:
-    workDir: ~/temperature
+    workDir: temperature
     steps:
       - type: checkout
       - name: build and test.
