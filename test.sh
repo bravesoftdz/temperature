@@ -10,9 +10,9 @@ if [ $? == 0 ]
 then
     FPC_COMPILER=fpc
 else
-    FPC_COMPILER="docker run --rm -v $(pwd):/workdir markfirmware/ufpc"
-    echo fpc not found ...
-    echo  using $FPC_COMPILER
+    DOCKER_FPC_IMAGE=markfirmware/ufpc
+    FPC_COMPILER="docker run --rm -v $(pwd):/workdir $DOCKER_FPC_IMAGE"
+    echo fpc not found ... using docker image $DOCKER_FPC_IMAGE
 fi
 
 function build {
