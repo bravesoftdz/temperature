@@ -7,10 +7,10 @@ stages:
     workDir: ~/temperature
     steps:
       - type: checkout
-      - name: build and test.
+      - name: build and test
         type: shell
         command: ./test.sh
       - name: save artifacts
         type: artifacts-store
-        path: ~/temperature/out
+        path: out
         destination: ultibo-qemu-framebuffer

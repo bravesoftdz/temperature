@@ -2,14 +2,21 @@
 
 PROGRAM=pqemuframebuffer.lpr
 
-DOCKER_FPC_COMPILER=markfirmware/ufpc
 OUTPUT=out
 QEMU_SCRIPT=run-qemu.tmp
+
+which fpc
+if [ $? == 0 ]
+then
+    FPC_COMPILER=fpc
+else
+    FPC_COMPILER="docker run --rm -v $(pwd):/workdir markfirmware/ufpc"
+fi
 
 function build {
     rm -rf obj && \
     mkdir -p obj && \
-    fpc \
+    $FPC_COMPILER \
      -B \
      -FEobj \
      -Tultibo \
