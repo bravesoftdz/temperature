@@ -9,7 +9,7 @@ QEMU_SCRIPT=run-qemu.tmp
 function build {
     rm -rf obj && \
     mkdir -p obj && \
-    docker run --rm -v $(pwd):/workdir $DOCKER_FPC_COMPILER \
+    fpc \
      -B \
      -FEobj \
      -Tultibo \
