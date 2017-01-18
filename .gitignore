@@ -1,4 +1,7 @@
+obj/
+out/
 *.elf
+*.bin
 *.img
 *.o
 *.s
