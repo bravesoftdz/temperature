@@ -6,7 +6,7 @@ stages:
   build:
     workDir: ~/ultibo-qemu-framebuffer
     steps:
-      - type: checkout:
+      - type: checkout
       - name: build and test
         type: shell
         command: test.sh
