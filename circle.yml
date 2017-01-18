@@ -4,7 +4,7 @@ containerInfo:
   - image: markfirmware/ufpc-circleci2-testing-26
 stages:
   build:
-    workDir: ~/ultibo-qemu-framebuffer
+    workDir: ~/temperature
     steps:
       - type: checkout
       - name: build and test.
