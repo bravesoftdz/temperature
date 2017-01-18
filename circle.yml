@@ -4,16 +4,13 @@ containerInfo:
   - image: markfirmware/ufpc-circleci2-testing-26
 stages:
   build:
-    workDir: ~/temperature
+    workDir: ~/ultibo-qemu-framebuffer
     steps:
-      - type: checkout
-      - name: build
+      - type: checkout:
+      - name: build and test
         type: shell
-        command: scripts/circleci-build.sh
-      - name: qemu test
-        type: shell
-        command: scripts/linux-test-with-qemu.sh && mv build-test-output artifacts
+        command: test.sh
       - name: save artifacts
         type: artifacts-store
-        path: artifacts
-        destination: temperature
+        path: out
+        destination: ultibo-qemu-framebuffer
