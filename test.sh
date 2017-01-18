@@ -11,6 +11,8 @@ then
     FPC_COMPILER=fpc
 else
     FPC_COMPILER="docker run --rm -v $(pwd):/workdir markfirmware/ufpc"
+    echo fpc not found ...
+    echo  using $FPC_COMPILER
 fi
 
 function build {
