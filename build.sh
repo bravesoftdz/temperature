@@ -10,7 +10,7 @@ if [ $? == 0 ]
 then
     FPC_COMPILER=fpc
 else
-    DOCKER_FPC_IMAGE=markfirmware/ufpc
+    DOCKER_FPC_IMAGE=markfirmware/ufpcarm
     FPC_COMPILER="docker run --rm -v $(pwd):/workdir $DOCKER_FPC_IMAGE"
     echo fpc not found ... using docker image $DOCKER_FPC_IMAGE
 fi
@@ -50,6 +50,7 @@ function make_qemu_script {
 \
     intr sleep 2
     qemu -en \\\\001c
+    intr sleep 4
     screendump
     intr sleep 2
     screendump
