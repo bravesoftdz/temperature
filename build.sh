@@ -89,6 +89,8 @@ fi
 
 unix_line_endings raw.log
 unix_line_endings serial.log
+sed 's/.\e.*\[D/qemu) /' serial.log > tmp
+mv tmp serial.log
 for screen in screen*.ppm
 do
     convert $screen ${screen%.ppm}.png
