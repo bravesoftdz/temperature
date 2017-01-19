@@ -33,4 +33,9 @@ end;
 begin
 StartLogging;
 Test;
+while True do
+ begin
+  LoggingOutput('Tick');
+  Sleep(1*1000);
+ end;
 end.
