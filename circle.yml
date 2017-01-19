@@ -9,7 +9,7 @@ stages:
       - type: checkout
       - name: build and test
         type: shell
-        command: ./test.sh
+        command: ./build.sh
       - name: save artifacts
         type: artifacts-store
         path: out
