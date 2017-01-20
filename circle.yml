@@ -1,7 +1,7 @@
 version: 2
 executorType: docker
 containerInfo:
-  - image: markfirmware/ultibo-bash-v2
+  - image: markfirmware/ultibo-bash-v3
 stages:
   build:
     workDir: ~/temperature
