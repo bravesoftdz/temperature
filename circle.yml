@@ -13,4 +13,4 @@ stages:
       - name: save artifacts
         type: artifacts-store
         path: out
-        destination: ultibo-qemu-framebuffer
+        destination: ultibo-system
