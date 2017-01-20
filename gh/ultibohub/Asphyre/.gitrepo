@@ -1,0 +1,11 @@
+; DO NOT EDIT (unless you know what you are doing)
+;
+; This subdirectory is a git "subrepo", and this file is maintained by the
+; git-subrepo command. See https://github.com/git-commands/git-subrepo#readme
+;
+[subrepo]
+	remote = git@github.com:ultibohub/Asphyre
+	branch = ultibo
+	commit = 662f7d9a213c96e7eb27ce5290a3d3a946cb193e
+	parent = c9a6069e7ba2279c2b7f6322bb1669ce969c11c8
+	cmdver = 0.3.1
