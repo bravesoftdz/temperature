@@ -1,24 +1,27 @@
 #!/bin/bash
+set -x
 
 PROGRAM=pqemuframebuffer.lpr
 
 OUTPUT=out
 QEMU_SCRIPT=run-qemu.tmp
 
-which fpc
-if [ $? == 0 ]
-then
-    FPC_COMPILER=fpc
-else
-    DOCKER_FPC_IMAGE=markfirmware/ufpc
-    FPC_COMPILER="docker run --rm -v $(pwd):/workdir $DOCKER_FPC_IMAGE"
-    echo fpc not found ... using docker image $DOCKER_FPC_IMAGE
-fi
+function docker_run {
+    which $1
+    if [ $? == 0 ]
+    then
+        $*
+    else
+        DOCKER_IMAGE=markfirmware/ultibo-bash-v1
+        echo $1 not found ... using docker image $DOCKER_IMAGE
+        docker run --rm -v $(pwd):/workdir $DOCKER_IMAGE "$*"
+    fi
+}
 
 function build {
     rm -rf obj && \
     mkdir -p obj && \
-    $FPC_COMPILER \
+    docker_run fpc \
      -B \
      -FEobj \
      -Tultibo \
@@ -60,7 +63,7 @@ function make_qemu_script {
 
 function run_qemu {
     echo running qemu ...
-    ./$QEMU_SCRIPT | qemu-system-arm \
+    docker_run ./$QEMU_SCRIPT | qemu-system-arm \
      -M versatilepb \
      -cpu cortex-a8 \
      -kernel kernel.bin \
@@ -93,7 +96,7 @@ sed -i 's/.\x1b.*\x1b\[D//' serial.log
 sed -i 's/\x1b\[K//' serial.log
 for screen in screen*.ppm
 do
-    convert $screen ${screen%.ppm}.png
+    docker_run convert $screen ${screen%.ppm}.png
     rm $screen
 done
 file *
