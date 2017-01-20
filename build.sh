@@ -11,9 +11,9 @@ function docker_run {
     then
         $*
     else
-        DOCKER_IMAGE=markfirmware/ultibo-bash-v1
+        DOCKER_IMAGE=markfirmware/ultibo-bash-v3
         echo $1 not found ... using docker image $DOCKER_IMAGE
-        docker run --rm -v $(pwd):/workdir $DOCKER_IMAGE "$*"
+        docker run --rm -v $(pwd):/workdir --entrypoint /bin/bash $DOCKER_IMAGE -c "$*"
     fi
 }
 
