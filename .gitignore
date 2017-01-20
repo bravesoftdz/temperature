@@ -1,7 +1,8 @@
-obj/
-out/
+**/obj/
+**/out/
 *.elf
 *.bin
 *.img
+*.log
 *.o
 *.s
