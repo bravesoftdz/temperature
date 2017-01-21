@@ -189,7 +189,7 @@ function build-asphyre {
             rm -rf $SAMPLE/$OUTPUT
             mkdir -p $SAMPLE/$OUTPUT
             build-RPi2 $SAMPLE
-            local THISOUT=$ARTIFACTS/Asphyre/Samples/FreePascal/Ultibo/RPi2/$SAMPLE
+            local THISOUT=$ARTIFACTS/Asphyre/$SAMPLE
             rm -rf $THISOUT
             mkdir -p $THISOUT
             cp -a $SAMPLE/$OUTPUT/* $THISOUT
