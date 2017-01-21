@@ -79,7 +79,7 @@ function test-qemu-target {
     unix_line_endings serial.log
     sed -i 's/.\x1b.*\x1b\[D//' serial.log
     sed -i 's/\x1b\[K//' serial.log
-    ls screen*.ppm > /.dev/null 2>&1
+    ls screen*.ppm > /dev/null 2>&1
     if [[ $? -eq 0 ]]
     then
         for screen in screen*.ppm
@@ -220,6 +220,6 @@ function build-examples {
     done
 }
 
-build-demo
+#build-demo
 build-examples
 build-asphyre
