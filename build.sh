@@ -1,7 +1,5 @@
 #!/bin/bash
 
-PROGRAM=pqemuframebuffer.lpr
-
 OUTPUT=out
 QEMU_SCRIPT=run-qemu.tmp
 
@@ -74,7 +72,7 @@ function main {
     make_qemu_script && \
     run_qemu
 
-    if [ "$?" != "0" ]
+    if [[ $? != 0 ]]
     then
         exit $?
     fi
@@ -103,7 +101,7 @@ function main {
 }
 
 function build-target {
-    echo ......................... building $1/*.lpr
+    echo ......................... building $1 *.lpr ... $(pwd)
     local INCLUDES=-Fi/root/ultibo/core/fpc/source/packages/fv/src
     rm -rf obj && \
     mkdir -p obj && \
@@ -139,23 +137,49 @@ function build-RPi3 {
     build-target $1 "-CpARMV7A -WpRPI3B" rpi3.cfg
 }
 
-function build-example {
-    EXAMPLE="$1"
-    cd $EXAMPLE
-    echo
-    echo $EXAMPLE
-    for TARGET in *
+ULTIBO_BASE=$(pwd)
+ARTIFACTS=$ULTIBO_BASE/$OUTPUT
+rm -rf $ARTIFACTS
+mkdir -p $ARTIFACTS
+
+function build-as {
+    local TARGET=$1
+    local FOLDER=$2
+    local REPO=$3
+    if [[ -d $FOLDER ]]
+    then
+        ls $FOLDER/*.lpr > /dev/null 2>&1
+        if [[ $? == 0 ]]
+        then
+            rm -rf $FOLDER/$OUTPUT
+            mkdir -p $FOLDER/$OUTPUT
+            build-$TARGET $FOLDER
+            local THISOUT=$ARTIFACTS/$REPO/$FOLDER
+            rm -rf $THISOUT
+            mkdir -p $THISOUT
+            cp -a $FOLDER/$OUTPUT/* $THISOUT
+        fi
+    fi
+}
+
+function build-asphyre {
+    cd $ULTIBO_BASE/gh/ultibohub/Asphyre
+    local SAMPLES_PATH=Samples/FreePascal/Ultibo
+    for SAMPLE_PATH in $SAMPLES_PATH/*
     do
-        rm -rf $OUTPUT
-        mkdir -p $OUTPUT
-        build-$TARGET $EXAMPLE/$TARGET
-        local THISOUT=$ARTIFACTS/Examples/$EXAMPLE/$TARGET
-        rm -rf $THISOUT
-        mkdir -p $THISOUT
-        cp -a $OUTPUT/* $THISOUT
-        cd ..
+        build-as RPi2 $SAMPLE_PATH Asphyre
     done
-    cd ..
+}
+
+function build-example {
+    TARGETS_PATH=$1
+    if [[ -d $TARGETS_PATH ]]
+    then
+        for TARGET_PATH in $TARGETS_PATH/*
+        do
+            build-as $(basename $TARGET_PATH) $TARGET_PATH Examples
+        done
+    fi
 }
 
 function build-examples {
@@ -164,38 +188,11 @@ function build-examples {
     do
         build-example $EXAMPLE
     done
-
     for EXAMPLE in Advanced/*
     do
-        if [ "$EXAMPLE" != "Advanced/README.md" ]
-        then
-            build-example $EXAMPLE
-        fi
+        build-example $EXAMPLE
     done
 }
 
-ULTIBO_BASE=$(pwd)
-ARTIFACTS=$ULTIBO_BASE/$OUTPUT
-rm -rf $ARTIFACTS
-mkdir -p $ARTIFACTS
-
-function build-asphyre {
-    cd $ULTIBO_BASE/gh/ultibohub/Asphyre
-    local SAMPLES=Samples/FreePascal/Ultibo
-    for SAMPLE in $SAMPLES/*
-    do
-        if [ "$SAMPLE" != "$SAMPLES/Media" ]
-        then
-            rm -rf $SAMPLE/$OUTPUT
-            mkdir -p $SAMPLE/$OUTPUT
-            build-RPi2 $SAMPLE
-            local THISOUT=$ARTIFACTS/Asphyre/$SAMPLE
-            rm -rf $THISOUT
-            mkdir -p $THISOUT
-            cp -a $SAMPLE/$OUTPUT/* $THISOUT
-        fi
-    done
-}
-
-build-examples
+#build-examples
 build-asphyre
