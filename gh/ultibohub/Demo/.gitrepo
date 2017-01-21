@@ -1,0 +1,11 @@
+; DO NOT EDIT (unless you know what you are doing)
+;
+; This subdirectory is a git "subrepo", and this file is maintained by the
+; git-subrepo command. See https://github.com/git-commands/git-subrepo#readme
+;
+[subrepo]
+	remote = git@github.com:ultibohub/Demo
+	branch = master
+	commit = 40ba2424e63d622cc77d319706ff54684295979f
+	parent = facc3517205605905c0e63dde540497442228f19
+	cmdver = 0.3.1
