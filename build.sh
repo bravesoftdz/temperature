@@ -31,7 +31,7 @@ function screendump {
     ((SCREEN_NUMBER+=1))
 }
 
-function make_qemu_script {
+function make-qemu-script {
     touch $QEMU_SCRIPT
 \
     intr sleep 2
@@ -44,7 +44,7 @@ function make_qemu_script {
     chmod u+x $QEMU_SCRIPT
 }
 
-function run_qemu {
+function run-qemu {
     echo running qemu ...
     QEMU=$(ultibo-bash-quotation qemu-system-arm \
      -M versatilepb \
@@ -62,17 +62,15 @@ function unix_line_endings {
     mv tmp $1
 }
 
-function main {
-    rm -rf $OUTPUT && \
-    mkdir -p $OUTPUT && \
-    build && \
+function test-qemu-target {
+    local RESTORE_PWD=$(pwd)
+    cd $1/$OUTPUT && \
+    pwd && \
+    ls && \
     \
-    cd $OUTPUT && \
-    \
-    make_qemu_script && \
-    run_qemu
-
-    if [[ $? != 0 ]]
+    make-qemu-script && \
+    run-qemu
+    if [[ $? -ne 0 ]]
     then
         exit $?
     fi
@@ -81,8 +79,8 @@ function main {
     unix_line_endings serial.log
     sed -i 's/.\x1b.*\x1b\[D//' serial.log
     sed -i 's/\x1b\[K//' serial.log
-    ls screen*.ppm
-    if [ "$?" == "0" ]
+    ls screen*.ppm > /.dev/null 2>&1
+    if [[ $? -eq 0 ]]
     then
         for screen in screen*.ppm
         do
@@ -94,10 +92,12 @@ function main {
     file *
 
     grep -i error serial.log
-    if [ "$?" == "0" ]
+    if [[ $? -eq 0 ]]
     then
         exit 1
     fi
+
+    cd $RESTORE_PWD
 }
 
 function build-target {
@@ -123,6 +123,7 @@ function build-target {
 
 function build-QEMU {
     build-target $1 "-CpARMV7A -WpQEMUVPB" qemuvpb.cfg $2
+    test-qemu-target $1
 }
 
 function build-RPi {
