@@ -154,7 +154,7 @@ function build-as {
             rm -rf $FOLDER/$OUTPUT
             mkdir -p $FOLDER/$OUTPUT
             build-$TARGET $FOLDER $FOLDER/*.lpr
-            local THISOUT=$ARTIFACTS/$REPO/$FOLDER
+            local THISOUT=$ARTIFACTS/ultibo-snapshot/$REPO/$FOLDER
             rm -rf $THISOUT
             mkdir -p $THISOUT
             cp -a $FOLDER/$OUTPUT/* $THISOUT
@@ -172,7 +172,7 @@ function build-as-2 {
             rm -rf $FOLDER/$OUTPUT
             mkdir -p $FOLDER/$OUTPUT
             build-$TARGET $FOLDER $PROGRAM
-            local THISOUT=$ARTIFACTS/$REPO/$FOLDER/$TARGET
+            local THISOUT=$ARTIFACTS/ultibo-snapshot/$REPO/$FOLDER/$TARGET
             rm -rf $THISOUT
             mkdir -p $THISOUT
             cp -a $FOLDER/$OUTPUT/* $THISOUT
@@ -183,7 +183,7 @@ function build-demo {
     cd $ULTIBO_BASE/gh/ultibohub/Demo
     for TARGET in RPi RPi2 RPi3
     do
-        build-as-2 $TARGET . Demo "UltiboDemo$TARGET.lpr"
+        build-as-2 $TARGET . ultibohub/Demo "UltiboDemo$TARGET.lpr"
     done
 }
 
@@ -192,7 +192,7 @@ function build-asphyre {
     local SAMPLES_PATH=Samples/FreePascal/Ultibo
     for SAMPLE_PATH in $SAMPLES_PATH/*
     do
-        build-as RPi2 $SAMPLE_PATH Asphyre
+        build-as RPi2 $SAMPLE_PATH ultibohub/Asphyre
     done
 }
 
@@ -202,7 +202,7 @@ function build-example {
     then
         for TARGET_PATH in $TARGETS_PATH/*
         do
-            build-as $(basename $TARGET_PATH) $TARGET_PATH Examples
+            build-as $(basename $TARGET_PATH) $TARGET_PATH ultibohub/Examples
         done
     fi
 }
