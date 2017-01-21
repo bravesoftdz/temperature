@@ -101,7 +101,7 @@ function main {
 }
 
 function build-target {
-    echo ......................... building $1 *.lpr ... $(pwd)
+    echo ......................... building $1 $4
     local INCLUDES=-Fi/root/ultibo/core/fpc/source/packages/fv/src
     rm -rf obj && \
     mkdir -p obj && \
@@ -116,25 +116,25 @@ function build-target {
      -FEobj \
      $INCLUDES \
      @/root/ultibo/core/fpc/bin/$3 \
-     $1/*.lpr |& tee build.log && \
+     $4 |& tee build.log && \
 \
     mv kernel* $1/$OUTPUT
 }
 
 function build-QEMU {
-    build-target $1 "-CpARMV7A -WpQEMUVPB" qemuvpb.cfg
+    build-target $1 "-CpARMV7A -WpQEMUVPB" qemuvpb.cfg $2
 }
 
 function build-RPi {
-    build-target $1 "-CpARMV6 -WpRPIB" rpi.cfg
+    build-target $1 "-CpARMV6 -WpRPIB" rpi.cfg $2
 }
 
 function build-RPi2 {
-    build-target $1 "-CpARMV7A -WpRPI2B" rpi2.cfg
+    build-target $1 "-CpARMV7A -WpRPI2B" rpi2.cfg $2
 }
 
 function build-RPi3 {
-    build-target $1 "-CpARMV7A -WpRPI3B" rpi3.cfg
+    build-target $1 "-CpARMV7A -WpRPI3B" rpi3.cfg $2
 }
 
 ULTIBO_BASE=$(pwd)
@@ -153,13 +153,38 @@ function build-as {
         then
             rm -rf $FOLDER/$OUTPUT
             mkdir -p $FOLDER/$OUTPUT
-            build-$TARGET $FOLDER
+            build-$TARGET $FOLDER $FOLDER/*.lpr
             local THISOUT=$ARTIFACTS/$REPO/$FOLDER
             rm -rf $THISOUT
             mkdir -p $THISOUT
             cp -a $FOLDER/$OUTPUT/* $THISOUT
         fi
     fi
+}
+
+function build-as-2 {
+    local TARGET=$1
+    local FOLDER=$2
+    local REPO=$3
+    local PROGRAM=$4
+    if [[ -d $FOLDER ]]
+    then
+            rm -rf $FOLDER/$OUTPUT
+            mkdir -p $FOLDER/$OUTPUT
+            build-$TARGET $FOLDER $PROGRAM
+            local THISOUT=$ARTIFACTS/$REPO/$FOLDER/$TARGET
+            rm -rf $THISOUT
+            mkdir -p $THISOUT
+            cp -a $FOLDER/$OUTPUT/* $THISOUT
+    fi
+}
+
+function build-demo {
+    cd $ULTIBO_BASE/gh/ultibohub/Demo
+    for TARGET in RPi RPi2 RPi3
+    do
+        build-as-2 $TARGET . Demo "UltiboDemo$TARGET.lpr"
+    done
 }
 
 function build-asphyre {
@@ -194,5 +219,6 @@ function build-examples {
     done
 }
 
-build-examples
-build-asphyre
+build-demo
+#build-examples
+#build-asphyre
