@@ -155,7 +155,7 @@ function build-as {
             rm -rf $FOLDER/$OUTPUT
             mkdir -p $FOLDER/$OUTPUT
             build-$TARGET $FOLDER $FOLDER/*.lpr
-            local THISOUT=$ARTIFACTS/ultibo-snapshot/$REPO/$FOLDER
+            local THISOUT=$ARTIFACTS/$REPO/$FOLDER
             rm -rf $THISOUT
             mkdir -p $THISOUT
             cp -a $FOLDER/$OUTPUT/* $THISOUT
@@ -173,7 +173,7 @@ function build-as-2 {
             rm -rf $FOLDER/$OUTPUT
             mkdir -p $FOLDER/$OUTPUT
             build-$TARGET $FOLDER $PROGRAM
-            local THISOUT=$ARTIFACTS/ultibo-snapshot/$REPO/$FOLDER/$TARGET
+            local THISOUT=$ARTIFACTS/$REPO/$FOLDER/$TARGET
             rm -rf $THISOUT
             mkdir -p $THISOUT
             cp -a $FOLDER/$OUTPUT/* $THISOUT
