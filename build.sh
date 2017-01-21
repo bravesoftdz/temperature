@@ -19,22 +19,6 @@ function ultibo-bash {
     eval $(ultibo-bash-quotation $*)
 }
 
-function build {
-    rm -rf obj && \
-    mkdir -p obj && \
-    ultibo-bash fpc \
-     -B \
-     -FEobj \
-     -Tultibo \
-     -O2 \
-     -Parm \
-     -CpARMV7A \
-     -WpQEMUVPB \
-     @/root/ultibo/core/fpc/bin/qemuvpb.cfg \
-     $PROGRAM && \
-     mv kernel.bin $OUTPUT
-}
-
 function intr {
     echo $* >> $QEMU_SCRIPT
 }
@@ -119,7 +103,7 @@ function main {
 }
 
 function build-target {
-    echo ......................... building $1 *.lpr
+    echo ......................... building $1/*.lpr
     local INCLUDES=-Fi/root/ultibo/core/fpc/source/packages/fv/src
     rm -rf obj && \
     mkdir -p obj && \
@@ -129,12 +113,14 @@ function build-target {
      -O2 \
      -Parm \
      $2 \
+     -Mdelphi \
+     -FuSource \
      -FEobj \
      $INCLUDES \
      @/root/ultibo/core/fpc/bin/$3 \
-     *.lpr |& tee build.log && \
+     $1/*.lpr |& tee build.log && \
 \
-    mv kernel* $OUTPUT
+    mv kernel* $1/$OUTPUT
 }
 
 function build-QEMU {
@@ -174,6 +160,7 @@ function build-example {
 }
 
 function build-examples {
+    cd $ULTIBO_BASE/gh/ultibohub/Examples
     for EXAMPLE in [0-9][0-9]-*
     do
         build-example $EXAMPLE
@@ -187,9 +174,32 @@ function build-examples {
             build-example $EXAMPLE
         fi
     done
-    cd ..
 }
 
-ARTIFACTS=$(pwd)/out
-cd gh/ultibohub/Examples
-build-examples
+ULTIBO_BASE=$(pwd)
+ARTIFACTS=$ULTIBO_BASE/$OUTPUT
+rm -rf $ARTIFACTS
+mkdir -p $ARTIFACTS
+
+#    -Fu$1 \
+
+function build-asphyre {
+    cd $ULTIBO_BASE/gh/ultibohub/Asphyre
+    local SAMPLES=Samples/FreePascal/Ultibo
+    for SAMPLE in $SAMPLES/*
+    do
+        if [ "$SAMPLE" != "$SAMPLES/Media" ]
+        then
+            rm -rf $SAMPLE/$OUTPUT
+            mkdir -p $SAMPLE/$OUTPUT
+            build-RPi2 $SAMPLE
+            local THISOUT=$ARTIFACTS/$SAMPLE
+            rm -rf $THISOUT
+            mkdir -p $THISOUT
+            cp -a $SAMPLE/$OUTPUT/* $THISOUT
+        fi
+    done
+}
+
+#build-examples
+build-asphyre

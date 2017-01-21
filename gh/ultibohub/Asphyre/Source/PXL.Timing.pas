@@ -227,14 +227,16 @@ end;
 {$ENDIF}
 
 function GetSystemTimerValue: TSystemTimerValue;
+{$IFNDEF ULTIBO}
 var
+{$ENDIF}
 {$IFDEF MSWINDOWS}
   PerformanceCounter: Int64;
 {$ENDIF}
 
-{$IFDEF ULTIBO}
-  Value: Int64;
-{$ENDIF}  
+//{$IFDEF ULTIBO}
+// Value: Int64;
+//{$ENDIF}  
 
 {$IF (DEFINED(FPC) AND DEFINED(UNIX)) OR DEFINED(POSIX)}
   Value: TimeVal;
@@ -285,14 +287,16 @@ begin
 end;
 
 function GetSystemTickCount: Cardinal;
+{$IFNDEF ULTIBO}
 var
+{$ENDIF}
 {$IFDEF MSWINDOWS}
   PerformanceCounter: Int64;
 {$ENDIF}
 
-{$IFDEF ULTIBO}
-  Value: Int64;
-{$ENDIF}  
+//{$IFDEF ULTIBO}
+//  Value: Int64;
+//{$ENDIF}  
 
 {$IF (DEFINED(FPC) AND DEFINED(UNIX)) OR DEFINED(POSIX)}
   Value: TimeVal;
@@ -343,14 +347,16 @@ begin
 end;
 
 function GetSystemTimeValue: Double;
+{$IFNDEF ULTIBO}
 var
+{$ENDIF}
 {$IFDEF MSWINDOWS}
   PerformanceCounter: Int64;
 {$ENDIF}
 
-{$IFDEF ULTIBO}
-  Value: Int64;
-{$ENDIF}  
+//{$IFDEF ULTIBO}
+//  Value: Int64;
+//{$ENDIF}  
 
 {$IF (DEFINED(FPC) AND DEFINED(UNIX)) OR DEFINED(POSIX)}
   Value: TimeVal;

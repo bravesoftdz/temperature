@@ -568,12 +568,12 @@ begin
         begin
           if SameText(Extension, TBitmapFont.DefaultXMLExtension) then
           begin // XML file
-            SepEntry := ChangeFileExt(Key, RawImageExtension);
+            SepEntry := ChangeFileExt(UnicodeString(Key), UnicodeString(RawImageExtension));
             SepEntryIndex := Archive.IndexOf(SepEntry);
 
             if SepEntryIndex = -1 then
             begin
-              SepEntry := ChangeFileExt(Key, TBitmapFont.DefaultImageExtension);
+              SepEntry := ChangeFileExt(UnicodeString(Key), UnicodeString(TBitmapFont.DefaultImageExtension));
               SepEntryIndex := Archive.IndexOf(SepEntry);
 
               if SepEntryIndex = -1 then
@@ -593,7 +593,7 @@ begin
           end
           else
           begin // Image file
-            SepEntry := ChangeFileExt(Key, TBitmapFont.DefaultXMLExtension);
+            SepEntry := ChangeFileExt(UnicodeString(Key), UnicodeString(TBitmapFont.DefaultXMLExtension));
 
             SepEntryIndex := Archive.IndexOf(SepEntry);
             if SepEntryIndex = -1 then

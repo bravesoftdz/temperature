@@ -354,7 +354,7 @@ procedure TFloatPalette.SaveToStream(const Stream: TStream);
 var
   I: Integer;
 begin
-  Stream.PutShortString(FName);
+  Stream.PutShortString(UnicodeString(FName));
   Stream.PutDouble(FTime);
   Stream.PutLongInt(Length(FData));
 
@@ -665,7 +665,7 @@ procedure TFloatPalettes.SaveToStream(const Stream: TStream);
 var
   I: Integer;
 begin
-  Stream.PutShortString(FTitle);
+  Stream.PutShortString(UnicodeString(FTitle));
   Stream.PutLongInt(Length(FData));
 
   for I := 0 to Length(FData) - 1 do

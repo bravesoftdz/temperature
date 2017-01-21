@@ -228,8 +228,8 @@ end;
 
 function TSRTDevice.BeginScene(const SwapChainIndex: Integer): Boolean;
 {$IFNDEF SRT_RENDER_TO_GDI_ENABLED}
-var
-  SwapChainInfo: PSwapChainInfo;
+//var
+//  SwapChainInfo: PSwapChainInfo;
 {$ENDIF}
 begin
 {$IFDEF SRT_RENDER_TO_GDI_ENABLED}
