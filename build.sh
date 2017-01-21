@@ -194,5 +194,5 @@ function build-examples {
     done
 }
 
-#build-examples
+build-examples
 build-asphyre
