@@ -146,11 +146,10 @@ function build-example {
     echo $EXAMPLE
     for TARGET in *
     do
-        cd $TARGET
         rm -rf $OUTPUT
         mkdir -p $OUTPUT
         build-$TARGET $EXAMPLE/$TARGET
-        local THISOUT=$ARTIFACTS/$EXAMPLE/$TARGET
+        local THISOUT=$ARTIFACTS/Examples/$EXAMPLE/$TARGET
         rm -rf $THISOUT
         mkdir -p $THISOUT
         cp -a $OUTPUT/* $THISOUT
@@ -166,10 +165,9 @@ function build-examples {
         build-example $EXAMPLE
     done
 
-    cd Advanced
-    for EXAMPLE in *
+    for EXAMPLE in Advanced/*
     do
-        if [ "$EXAMPLE" != "README.md" ]
+        if [ "$EXAMPLE" != "Advanced/README.md" ]
         then
             build-example $EXAMPLE
         fi
@@ -181,8 +179,6 @@ ARTIFACTS=$ULTIBO_BASE/$OUTPUT
 rm -rf $ARTIFACTS
 mkdir -p $ARTIFACTS
 
-#    -Fu$1 \
-
 function build-asphyre {
     cd $ULTIBO_BASE/gh/ultibohub/Asphyre
     local SAMPLES=Samples/FreePascal/Ultibo
@@ -193,7 +189,7 @@ function build-asphyre {
             rm -rf $SAMPLE/$OUTPUT
             mkdir -p $SAMPLE/$OUTPUT
             build-RPi2 $SAMPLE
-            local THISOUT=$ARTIFACTS/$SAMPLE
+            local THISOUT=$ARTIFACTS/Asphyre/Samples/FreePascal/Ultibo/RPi2/$SAMPLE
             rm -rf $THISOUT
             mkdir -p $THISOUT
             cp -a $SAMPLE/$OUTPUT/* $THISOUT
@@ -201,5 +197,5 @@ function build-asphyre {
     done
 }
 
-#build-examples
+build-examples
 build-asphyre
