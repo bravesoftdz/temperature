@@ -70,10 +70,7 @@ function test-qemu-target {
     \
     make-qemu-script && \
     run-qemu
-    if [[ $? -ne 0 ]]
-    then
-        exit $?
-    fi
+    if [[ $? -ne 0 ]]; then exit $?; fi
 
     unix_line_endings raw.log
     unix_line_endings serial.log
@@ -92,20 +89,20 @@ function test-qemu-target {
     file *
 
     grep -i error serial.log
-    if [[ $? -eq 0 ]]
-    then
-        exit 1
-    fi
+    if [[ $? -eq 0 ]]; then exit 1; fi
 
     cd $RESTORE_PWD
 }
 
 function build-target {
-    echo ......................... building $1 $4
+    echo .... building $4
     local INCLUDES=-Fi/root/ultibo/core/fpc/source/packages/fv/src
     rm -rf obj && \
     mkdir -p obj && \
     ultibo-bash fpc \
+     -l- \
+     -Sewn \
+     -v0ewn \
      -B \
      -Tultibo \
      -O2 \
@@ -119,6 +116,7 @@ function build-target {
      $4 |& tee build.log && \
 \
     mv kernel* $1/$OUTPUT
+#   if [[ $? -ne 0 ]]; then exit $?; fi
 }
 
 function build-QEMU {
@@ -221,5 +219,5 @@ function build-examples {
 }
 
 #build-demo
-build-examples
+#build-examples
 build-asphyre

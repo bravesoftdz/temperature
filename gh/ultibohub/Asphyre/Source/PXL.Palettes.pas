@@ -373,7 +373,7 @@ procedure TFloatPalette.LoadFromStream(const Stream: TStream);
 var
   I, ElemCount: Integer;
 begin
-  FName := Stream.GetShortString;
+  FName := UTF8String(Stream.GetShortString);
   FTime := Stream.GetDouble;
   ElemCount := Stream.GetLongInt;
 
@@ -676,7 +676,7 @@ procedure TFloatPalettes.LoadFromStream(const Stream: TStream);
 var
   I, ElemCount: Integer;
 begin
-  FTitle := Stream.GetShortString;
+  FTitle := UTF8String(Stream.GetShortString);
   ElemCount := Stream.GetLongInt;
 
   Clear;
