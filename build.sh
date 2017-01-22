@@ -65,8 +65,6 @@ function unix_line_endings {
 function test-qemu-target {
     local RESTORE_PWD=$(pwd)
     cd $1/$OUTPUT && \
-    pwd && \
-    ls && \
     \
     make-qemu-script && \
     run-qemu
