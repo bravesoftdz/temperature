@@ -218,6 +218,6 @@ function build-examples {
     done
 }
 
-#build-demo
-#build-examples
+build-demo
+build-examples
 build-asphyre
