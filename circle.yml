@@ -7,10 +7,10 @@ stages:
     workDir: ~/temperature
     steps:
       - type: checkout
-      - name: build and test
+      - name: Build and test
         type: shell
         command: ./build.sh
-      - name: save artifacts
+      - name: Save artifacts
         type: artifacts-store
         path: out
         destination: ultibo-snapshot

@@ -80,7 +80,6 @@ function test-qemu-target {
         for screen in screen*.ppm
         do
             ultibo-bash convert $screen ${screen%.ppm}.png && \
-            ls -lt $screen
             rm $screen
         done
     fi
