@@ -53,7 +53,7 @@ function run-qemu {
      -m 256M \
      -display none \
      -serial mon:stdio)
-    eval "./$QEMU_SCRIPT | $QEMU > tee raw.log" && \
+    eval "./$QEMU_SCRIPT | $QEMU > raw.log" && \
     cat raw.log | egrep -iv '^(alsa|pulseaudio:|audio:)' > serial.log
 }
 
