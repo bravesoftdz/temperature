@@ -102,5 +102,4 @@ for i in serial:
 
 bash (['convert {0}/screen-01.ppm {0}/screen-01.png'.format (outputfolder),
        'convert {0}/screen-02.ppm {0}/screen-02.png'.format (outputfolder),
-       'rm {}/*.ppm'.format (outputfolder),
-       'cat {}/applog.txt'.format (outputfolder)])
+       'rm {}/*.ppm'.format (outputfolder)])

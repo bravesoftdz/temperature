@@ -80,7 +80,10 @@ function test-qemu-target {
     if [[ $? -ne 0 ]]; then log fail: $?; fi
 
     unix_line_endings run-qemu-output/monitor.txt
-#   unix_line_endings applog.txt
+    unix_line_endings run-qemu-output/serial0.txt
+    unix_line_endings run-qemu-output/serial1.txt
+    unix_line_endings run-qemu-output/serial2.txt
+    unix_line_endings run-qemu-output/serial3.txt
     sed -i 's/.\x1b.*\x1b\[D//' run-qemu-output/monitor.txt
     sed -i 's/\x1b\[K//' run-qemu-output/monitor.txt
     ls screen*.ppm > /dev/null 2>&1
@@ -95,11 +98,11 @@ function test-qemu-target {
 
     file run-qemu-output/*
 
-    grep -i error run-qemu-output/applog.txt	
-    local EXIT_STATUS=$?
+#   grep -i error run-qemu-output/applog.txt	
+#   local EXIT_STATUS=$?
 
     cd $RESTORE_PWD
-    if [[ EXIT_STATUS == 0 ]]; then log fail: $?; fi
+#   if [[ EXIT_STATUS == 0 ]]; then log fail: $?; fi
 }
 
 function build-example {
