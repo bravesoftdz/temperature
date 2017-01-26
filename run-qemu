@@ -59,33 +59,37 @@ qemuprocess = subprocess.Popen (["qemu-system-arm",
                                  "-m", "256M",
                                  "-usb",
                                  "-display", "none",
-                                 "-monitor", "tcp:127.0.0.1:38001,server",
+                                 "-serial", "tcp:127.0.0.1:38000,server",
+                                 "-serial", "tcp:127.0.0.1:38001,server"],
                                  "-serial", "tcp:127.0.0.1:38002,server",
                                  "-serial", "tcp:127.0.0.1:38003,server"],
+                                 "-monitor", "tcp:127.0.0.1:38004,server",
                                 stdout=subprocess.PIPE,
                                 stderr=subprocess.PIPE)
 
-sleep (2)
-monitor = TcpChannel ('monitor', 38001)
-appapi  = TcpChannel ('appapi',  38002)
-applog  = TcpChannel ('applog',  38003)
+def drainall ():
+    for s in serial:
+        s.drain ()
+    monitor.drain ()
 
-applog.drain ()
+sleep (2)
+for i in range (4):
+    serial [i] = TcpChannel ('serial{}'.format (i),  38000 + i)
+monitor = TcpChannel ('monitor', 38004)
+
+drainall ()
 monitor.writeline ('screendump {}/screen-01.ppm'.format (outputfolder))
-for i in range (1, 10):
-    appapi.writekeyboardline ('line {}'.format (i))
+for s in serial:
+    for i in range (1, 10):
+        s.writekeyboardline ('line {}'.format (i))
 sleep (7)
 monitor.writeline ('screendump {}/screen-02.ppm'.format (outputfolder))
 
 sleep (2)
-applog.drain ()
-appapi.drain ()
-monitor.drain ()
+drainall ()
 monitor.writeline ('quit')
 sleep (2)
-applog.drain ()
-appapi.drain ()
-monitor.drain ()
+drainall ()
 monitor.finishquit (qemuprocess)
 
 #print
