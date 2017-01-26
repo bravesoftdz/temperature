@@ -132,7 +132,8 @@ function build-demo {
 
 function build-examples {
     local EXAMPLES_PATH=gh/ultibohub/Examples
-    for EXAMPLE in $EXAMPLES_PATH/[0-9][0-9]-*
+#   for EXAMPLE in $EXAMPLES_PATH/[0-9][0-9]-*
+    for EXAMPLE in $EXAMPLES_PATH/13-*
     do
         build-example $EXAMPLE
     done
@@ -233,8 +234,8 @@ rm -rf $OUTPUT
 mkdir -p $OUTPUT
 rm -f $LOG
 
-build-asphyre
+#build-asphyre
 build-examples
-build-demo
+#build-demo
 
 create-build-summary
