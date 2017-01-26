@@ -73,7 +73,7 @@ function unix_line_endings {
     which mv
     echo file is $FILE
     tr -d \\r < $FILE > tmp && \
-    mv tmp $FILE
+    /usr/bin/mv tmp $FILE
 }
 
 function test-qemu-target {
