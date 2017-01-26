@@ -85,18 +85,19 @@ function test-qemu-target {
     if [[ $? -ne 0 ]]; then log fail: $?; fi
     cd $RESTORE_PWD
 
-    log ... 1
-    ls -lt $QEMU_OUTPUT
+    set -x
+    ps
     unix_line_endings $QEMU_OUTPUT/monitor.txt
-    ls -lt $QEMU_OUTPUT
+    ps
     unix_line_endings $QEMU_OUTPUT/applog.txt
-    ls -lt $QEMU_OUTPUT
+    ps
     unix_line_endings $QEMU_OUTPUT/apilog.txt
-    ls -lt $QEMU_OUTPUT
+    ps
     
-    log ... 2
     sed -i 's/.\x1b.*\x1b\[D//' $QEMU_OUTPUT/monitor.txt
+    ps
     sed -i 's/\x1b\[K//' $QEMU_OUTPUT/monitor.txt
+    ps
 
     grep -i error $QEMU_OUTPUT/applog.txt	
     local EXIT_STATUS=$?
