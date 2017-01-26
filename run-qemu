@@ -86,8 +86,8 @@ appapi.drain ()
 monitor.drain ()
 monitor.finishquit (qemuprocess)
 
-print
-print 'qemu return code', qemuprocess.returncode
+#print
+#print 'qemu return code', qemuprocess.returncode
 
 monitor.close ()
 applog.close ()

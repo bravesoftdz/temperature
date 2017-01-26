@@ -88,6 +88,7 @@ function test-qemu-target {
 #   set -x
     ps
     pwd
+    ls -l $QEMU_OUTPUT
 #   unix_line_endings $QEMU_OUTPUT/monitor.txt
 #   ps
 #   unix_line_endings $QEMU_OUTPUT/applog.txt
