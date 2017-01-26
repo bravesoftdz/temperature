@@ -7,7 +7,7 @@ outputfolder = 'run-qemu-output'
 
 class TcpChannel:
     def __init__ (self, name, port):
-        print name, port
+#       print name, port
         self.name = name
         self.port = port
         self.socket = socket.socket ()
@@ -15,11 +15,11 @@ class TcpChannel:
         self.logfile = open ('{}/{}.txt'.format (outputfolder, self.name), 'a')
         sleep (1)
     def writeline (self, line):
-        print '{}>>>>{}'.format (self.name, line)
+#       print '{}>>>>{}'.format (self.name, line)
         self.logfile.write (line + '\n')
         self.socket.sendall (line + '\n')
     def writekeyboardline (self, line):
-        print '{}>>>>{}'.format (self.name, line)
+#       print '{}>>>>{}'.format (self.name, line)
         self.logfile.write (line + '\n')
         self.socket.sendall (line + '\r')
     def drain (self):
@@ -44,7 +44,7 @@ class TcpChannel:
 
 def bash (lines):
     for line in lines:
-        print 'bash >>', line
+#       print 'bash >>', line
         subprocess.check_call (line, shell=True)
 
 bash (['rm -rf {}/'.format (outputfolder),
@@ -86,8 +86,8 @@ appapi.drain ()
 monitor.drain ()
 monitor.finishquit (qemuprocess)
 
-print
-print 'qemu return code', qemuprocess.returncode
+#print
+#print 'qemu return code', qemuprocess.returncode
 
 monitor.close ()
 applog.close ()
