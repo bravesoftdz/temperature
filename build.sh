@@ -85,9 +85,12 @@ function test-qemu-target {
     cd $RESTORE_PWD
     if [[ $? -ne 0 ]]; then log fail: $?; fi
 
+    log ... 1
     unix_line_endings $QEMU_OUTPUT/monitor.txt
     unix_line_endings $QEMU_OUTPUT/applog.txt
     unix_line_endings $QEMU_OUTPUT/apilog.txt
+    
+    log ... 2
     sed -i 's/.\x1b.*\x1b\[D//' $QEMU_OUTPUT/monitor.txt
     sed -i 's/\x1b\[K//' $QEMU_OUTPUT/monitor.txt
 
