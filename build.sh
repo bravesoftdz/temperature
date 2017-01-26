@@ -89,7 +89,7 @@ function test-qemu-target {
 
     unix_line_endings $QEMU_OUTPUT/monitor.txt
     unix_line_endings $QEMU_OUTPUT/applog.txt
-    unix_line_endings $QEMU_OUTPUT/apilog.txt
+    unix_line_endings $QEMU_OUTPUT/appapi.txt
  
     sed -i 's/.\x1b.*\x1b\[D//' $QEMU_OUTPUT/monitor.txt
     sed -i 's/\x1b\[K//' $QEMU_OUTPUT/monitor.txt
