@@ -17,12 +17,12 @@ class TcpChannel:
     def writeline (self, line, echo=False):
 #       print '{}>>>>{}'.format (self.name, line)
         if echo:
-            self.logfile.write ('{}>>>>{}\n'.format (self.name, line)
+            self.logfile.write ('{}>>>>{}\n'.format (self.name, line))
         self.socket.sendall (line + '\n')
     def writekeyboardline (self, line, echo=False):
 #       print '{}>>>>{}'.format (self.name, line)
         if echo:
-            self.logfile.write ('{}>>>>{}\n'.format (self.name, line)
+            self.logfile.write ('{}>>>>{}\n'.format (self.name, line))
         self.socket.sendall (line + '\r')
     def drain (self):
         try:
