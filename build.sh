@@ -80,7 +80,7 @@ function test-qemu-target {
     \
 #   make-qemu-script && \
 #   run-qemu
-    $RESTORE_PWD/run-qemu
+    python $RESTORE_PWD/run-qemu
     if [[ $? -ne 0 ]]; then log fail: $?; fi
 
     unix_line_endings run-qemu-output/monitor.txt
@@ -236,6 +236,8 @@ LOG=$OUTPUT/build.log
 rm -rf $OUTPUT
 mkdir -p $OUTPUT
 rm -f $LOG
+
+python -m pip install parse
 
 build-asphyre
 build-examples
