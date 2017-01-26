@@ -59,21 +59,30 @@ qemuprocess = subprocess.Popen (["c:/Ultibo/Core/qemu/qemu-system-arm.exe",
                                  "-m", "256M",
                                  "-usb",
                                  "-display", "none",
-                                 "-monitor", "tcp:127.0.0.1:38001,server",
+                                 "-monitor", "tcp:127.0.0.1:38004,server",
+                                 "-serial", "tcp:127.0.0.1:38000,server",
+                                 "-serial", "tcp:127.0.0.1:38001,server",
                                  "-serial", "tcp:127.0.0.1:38002,server",
                                  "-serial", "tcp:127.0.0.1:38003,server"],
                                 stdout=subprocess.PIPE,
                                 stderr=subprocess.PIPE)
 
-sleep (2)
-monitor = TcpChannel ('monitor', 38001)
-applog  = TcpChannel ('applog',  38002)
-appapi  = TcpChannel ('appapi',  38003)
+serial = {}
+def drainall ():
+    for i in serial:
+        serial [i].drain ()
+    monitor.drain ()
 
-applog.drain ()
+sleep (2)
+monitor = TcpChannel ('monitor', 38004)
+for i in range (4):
+    serial [i] = TcpChannel ('serial{}'.format (i),  38000 + i)
+
+drainall ()
 monitor.writeline ('screendump {}/screen-01.ppm'.format (outputfolder))
-for i in range (1, 10):
-    appapi.writekeyboardline ('line {}'.format (i))
+for s in serial:
+    for i in range (1, 10):
+        serial [s].writekeyboardline ('line {}'.format (i))
 sleep (7)
 monitor.writeline ('screendump {}/screen-02.ppm'.format (outputfolder))
 
@@ -82,21 +91,21 @@ applog.drain ()
 appapi.drain ()
 monitor.drain ()
 monitor.writeline ('quit')
+
 sleep (2)
-applog.drain ()
-appapi.drain ()
-monitor.drain ()
+drainall ()
+monitor.writeline ('quit')
+sleep (2)
+drainall ()
 monitor.finishquit (qemuprocess)
 
 #print
 #print 'qemu return code', qemuprocess.returncode
 
 monitor.close ()
-applog.close ()
-appapi.close ()
+for i in serial:
+    serial [i].close ()
 
-#convert = '/c/ProgramData/chocolatey/lib/imagemagick.tool/tools/convert.exe'
-#bash (['{0} {1}/screen-01.ppm {1}/screen-01.png'.format (convert, outputfolder),
-#       '{0} {1}/screen-02.ppm {1}/screen-02.png'.format (convert, outputfolder),
-#       'rm {}/*.ppm'.format (outputfolder),
-#       'cat {}/applog.txt'.format (outputfolder)])
+bash (['convert {0}/screen-01.ppm {0}/screen-01.png'.format (outputfolder),
+       'convert {0}/screen-02.ppm {0}/screen-02.png'.format (outputfolder),
+       'rm {}/*.ppm'.format (outputfolder)])
