@@ -92,7 +92,8 @@ function test-qemu-target {
     then
         for screen in screen*.ppm
         do
-            ultibo-bash convert $screen ${screen%.ppm}.png && \
+#           ultibo-bash convert $screen ${screen%.ppm}.png &&
+            c/ProgramData/chocolatey/lib/imagemagick.tool/tools/convert $screen ${screen%.ppm}.png && \
             rm $screen
         done
     fi
