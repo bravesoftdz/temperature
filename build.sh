@@ -68,6 +68,7 @@ function ultibo-bash {
 #}
 
 function unix_line_endings {
+    echo file is $1
     tr -d \\r < $1 > tmp && \
     mv tmp $1
 }
@@ -85,19 +86,14 @@ function test-qemu-target {
     if [[ $? -ne 0 ]]; then log fail: $?; fi
     cd $RESTORE_PWD
 
-#   set -x
-#   ps
-#   unix_line_endings $QEMU_OUTPUT/monitor.txt
-#   ps
+    ps
+    set -x
+    unix_line_endings $QEMU_OUTPUT/monitor.txt
 #   unix_line_endings $QEMU_OUTPUT/applog.txt
-#   ps
 #   unix_line_endings $QEMU_OUTPUT/apilog.txt
-#   ps
  
 #   sed -i 's/.\x1b.*\x1b\[D//' $QEMU_OUTPUT/monitor.txt
-#   ps
 #   sed -i 's/\x1b\[K//' $QEMU_OUTPUT/monitor.txt
-#   ps
 
 #   grep -i error $QEMU_OUTPUT/applog.txt	
 #   local EXIT_STATUS=$?
@@ -135,14 +131,15 @@ function build-demo {
 
 function build-examples {
     local EXAMPLES_PATH=gh/ultibohub/Examples
-    for EXAMPLE in $EXAMPLES_PATH/[0-9][0-9]-*
+#   for EXAMPLE in $EXAMPLES_PATH/[0-9][0-9]-*
+    for EXAMPLE in $EXAMPLES_PATH/01-*
     do
         build-example $EXAMPLE
     done
-    for EXAMPLE in $EXAMPLES_PATH/Advanced/*
-    do
-        build-example $EXAMPLE
-    done
+#   for EXAMPLE in $EXAMPLES_PATH/Advanced/*
+#   do
+#       build-example $EXAMPLE
+#   done
 }
 
 function build-lpr {
@@ -238,8 +235,8 @@ rm -f $LOG
 
 python -m pip install parse
 
-build-asphyre
+#build-asphyre
 build-examples
-build-demo
+#build-demo
 
 create-build-summary
