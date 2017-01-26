@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PATH=/c/Ultibo/Core/fpc/3.1.1/bin:$PATH
+PATH=/c/Ultibo/Core/fpc/3.1.1/bin/i386-win32:$PATH
 
 # Build the ultibo projects in this repo.
 #
