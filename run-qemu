@@ -60,10 +60,10 @@ qemuprocess = subprocess.Popen (["qemu-system-arm",
                                  "-usb",
                                  "-display", "none",
                                  "-serial", "tcp:127.0.0.1:38000,server",
-                                 "-serial", "tcp:127.0.0.1:38001,server"],
+                                 "-serial", "tcp:127.0.0.1:38001,server",
                                  "-serial", "tcp:127.0.0.1:38002,server",
-                                 "-serial", "tcp:127.0.0.1:38003,server"],
-                                 "-monitor", "tcp:127.0.0.1:38004,server",
+                                 "-serial", "tcp:127.0.0.1:38003,server",
+                                 "-monitor", "tcp:127.0.0.1:38004,server"],
                                 stdout=subprocess.PIPE,
                                 stderr=subprocess.PIPE)
 
