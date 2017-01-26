@@ -67,8 +67,8 @@ qemuprocess = subprocess.Popen (["qemu-system-arm",
 
 sleep (2)
 monitor = TcpChannel ('monitor', 38001)
-applog  = TcpChannel ('applog',  38002)
-appapi  = TcpChannel ('appapi',  38003)
+appapi  = TcpChannel ('appapi',  38002)
+applog  = TcpChannel ('applog',  38003)
 
 applog.drain ()
 monitor.writeline ('screendump {}/screen-01.ppm'.format (outputfolder))
