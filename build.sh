@@ -81,14 +81,12 @@ function test-qemu-target {
     \
 #   make-qemu-script && \
 #   run-qemu
-    python $RESTORE_PWD/run-qemu
+    time python $RESTORE_PWD/run-qemu
     if [[ $? -ne 0 ]]; then log fail: $?; fi
     cd $RESTORE_PWD
 
 #   set -x
-    ps
-    pwd
-    ls -l $QEMU_OUTPUT
+#   ps
 #   unix_line_endings $QEMU_OUTPUT/monitor.txt
 #   ps
 #   unix_line_endings $QEMU_OUTPUT/applog.txt
