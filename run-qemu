@@ -93,8 +93,8 @@ monitor.close ()
 applog.close ()
 appapi.close ()
 
-convert = '/c/ProgramData/chocolatey/lib/imagemagick.tool/tools/convert.exe'
-bash (['{0} {1}/screen-01.ppm {1}/screen-01.png'.format (convert, outputfolder),
-       '{0} {1}/screen-02.ppm {1}/screen-02.png'.format (convert, outputfolder),
-       'rm {}/*.ppm'.format (outputfolder),
-       'cat {}/applog.txt'.format (outputfolder)])
+#convert = '/c/ProgramData/chocolatey/lib/imagemagick.tool/tools/convert.exe'
+#bash (['{0} {1}/screen-01.ppm {1}/screen-01.png'.format (convert, outputfolder),
+#       '{0} {1}/screen-02.ppm {1}/screen-02.png'.format (convert, outputfolder),
+#       'rm {}/*.ppm'.format (outputfolder),
+#       'cat {}/applog.txt'.format (outputfolder)])
