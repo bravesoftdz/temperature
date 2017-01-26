@@ -82,13 +82,17 @@ function test-qemu-target {
 #   make-qemu-script && \
 #   run-qemu
     python $RESTORE_PWD/run-qemu
-    cd $RESTORE_PWD
     if [[ $? -ne 0 ]]; then log fail: $?; fi
+    cd $RESTORE_PWD
 
     log ... 1
+    ls -lt $QEMU_OUTPUT
     unix_line_endings $QEMU_OUTPUT/monitor.txt
+    ls -lt $QEMU_OUTPUT
     unix_line_endings $QEMU_OUTPUT/applog.txt
+    ls -lt $QEMU_OUTPUT
     unix_line_endings $QEMU_OUTPUT/apilog.txt
+    ls -lt $QEMU_OUTPUT
     
     log ... 2
     sed -i 's/.\x1b.*\x1b\[D//' $QEMU_OUTPUT/monitor.txt
