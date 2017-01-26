@@ -51,7 +51,7 @@ function make-qemu-script {
 }
 
 function run-qemu {
-    echo running qemu ...
+    echo .... running qemu
     QEMU=$(ultibo-bash-quotation qemu-system-arm \
      -M versatilepb \
      -cpu cortex-a8 \
@@ -70,11 +70,12 @@ function unix_line_endings {
 
 function test-qemu-target {
     local RESTORE_PWD=$(pwd)
-    cd $1/$OUTPUT && \
+    local FOLDER=$1
+    cd $FOLDER/$OUTPUT && \
     \
     make-qemu-script && \
     run-qemu
-    if [[ $? -ne 0 ]]; then exit $?; fi
+    if [[ $? -ne 0 ]]; then log fail: $?; fi
 
     unix_line_endings raw.log
     unix_line_endings serial.log
@@ -89,18 +90,13 @@ function test-qemu-target {
             rm $screen
         done
     fi
-    file *
 
     grep -i error serial.log
-    if [[ $? -eq 0 ]]; then exit 1; fi
+    local EXIT_STATUS=$?
 
     cd $RESTORE_PWD
+    if [[ EXIT_STATUS == 0 ]]; then log fail: $?; fi
 }
-
-#function build-QEMU {
-#    build-target $1 "-CpARMV7A -WpQEMUVPB" qemuvpb.cfg $2
-#    test-qemu-target $1
-#}
 
 function build-example {
     TARGETS_PATH=$1
@@ -192,7 +188,8 @@ function build-as {
             mkdir -p $FOLDER/$OUTPUT
             case $TARGET in
                 QEMU)
-                    build-lpr $LPR_FILE "-CpARMV7A -WpQEMUVPB" qemuvpb.cfg $FOLDER ;;
+                    build-lpr $LPR_FILE "-CpARMV7A -WpQEMUVPB" qemuvpb.cfg $FOLDER
+                    test-qemu-target $FOLDER ;;
                 RPi)
                     build-lpr $LPR_FILE "-CpARMV6 -WpRPIB" rpi.cfg $FOLDER ;;
                 RPi2)
@@ -200,7 +197,7 @@ function build-as {
                 RPi3)
                     build-lpr $LPR_FILE "-CpARMV7A -WpRPI3B" rpi3.cfg $FOLDER ;;
             esac
-            local THISOUT=$OUTPUT/kernels/$FOLDER
+            local THISOUT=$OUTPUT/kernels-and-tests/$FOLDER
             rm -rf $THISOUT && \
             mkdir -p $THISOUT && \
             cp -a $FOLDER/$OUTPUT/* $THISOUT && \
@@ -223,11 +220,8 @@ function create-build-summary {
     fi
 }
 
-ULTIBO_BASE=$(pwd)
 OUTPUT=build-output
-
 QEMU_SCRIPT=run-qemu.tmp
-
 SCREEN_NUMBER=1
 ERRORS=build-errors.txt
 LOG=$OUTPUT/build.log
