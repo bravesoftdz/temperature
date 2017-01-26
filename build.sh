@@ -1,6 +1,8 @@
 #!/bin/bash
 
-PATH=/c/Ultibo/Core/fpc/3.1.1/bin/i386-win32:$PATH
+#INSTALL_PATH=/root/ultibo/core/fpc/bin/
+INSTALL_PATH=/c/Ultibo/Core/fpc/3.1.1/bin/i386-win32
+PATH=$INSTALL_PATH:$PATH
 
 # Build the ultibo projects in this repo.
 #
@@ -166,7 +168,7 @@ function build-lpr {
      -FE$LPR_FOLDER/obj \
      $INCLUDES \
      $TARGET_COMPILER_OPTIONS \
-     @/root/ultibo/core/fpc/bin/$CFG_NAME \
+     @$INSTALL_PATH/$CFG_NAME \
      $LPR_FILE |& tee -a $LOG && \
 \
     mv kernel* $LPR_FOLDER/$OUTPUT
