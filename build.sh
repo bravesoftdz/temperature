@@ -68,9 +68,12 @@ function ultibo-bash {
 #}
 
 function unix_line_endings {
-    echo file is $1
-    tr -d \\r < $1 > tmp && \
-    mv tmp $1
+    local FILE=$1
+    which tr
+    which mv
+    echo file is $FILE
+    tr -d \\r < $FILE > tmp && \
+    mv tmp $FILE
 }
 
 function test-qemu-target {
