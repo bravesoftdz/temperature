@@ -217,7 +217,7 @@ function build-as {
 }
 
 function create-build-summary {
-    cat $LOG | egrep -i '(fail|error|warning|note):' | sort | uniq > $ERRORS
+    cat $LOG | egrep -i '(fail|fatal|error|warning|note):' | sort | uniq > $ERRORS
     log
     log Summary:
     log
