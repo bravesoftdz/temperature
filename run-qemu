@@ -87,12 +87,6 @@ sleep (7)
 monitor.writeline ('screendump {}/screen-02.ppm'.format (outputfolder))
 
 sleep (2)
-applog.drain ()
-appapi.drain ()
-monitor.drain ()
-monitor.writeline ('quit')
-
-sleep (2)
 drainall ()
 monitor.writeline ('quit')
 sleep (2)
