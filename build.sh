@@ -76,35 +76,26 @@ function test-qemu-target {
     log .... running qemu
     local RESTORE_PWD=$(pwd)
     local FOLDER=$1
+    local QEMU_OUTPUT=$FOLDER/$OUTPUT/run-qemu-output
     cd $FOLDER/$OUTPUT && \
     \
 #   make-qemu-script && \
 #   run-qemu
     python $RESTORE_PWD/run-qemu
-    log ......... done
+    cd $RESTORE_PWD
     if [[ $? -ne 0 ]]; then log fail: $?; fi
 
-    unix_line_endings run-qemu-output/monitor.txt
-#   unix_line_endings applog.txt
-    sed -i 's/.\x1b.*\x1b\[D//' run-qemu-output/monitor.txt
-    sed -i 's/\x1b\[K//' run-qemu-output/monitor.txt
-#   ls screen*.ppm > /dev/null 2>&1
-#   if [[ $? -eq 0 ]]
-#   then
-#       for screen in screen*.ppm
-#       do
-#           ultibo-bash convert $screen ${screen%.ppm}.png &&
-#           c/ProgramData/chocolatey/lib/imagemagick.tool/tools/convert $screen ${screen%.ppm}.png && \
-#           rm $screen
-#       done
-#   fi
+    unix_line_endings $QEMU_OUPUT/monitor.txt
+    unix_line_endings $QEMU_OUPUT/applog.txt
+    unix_line_endings $QEMU_OUPUT/apilog.txt
+    sed -i 's/.\x1b.*\x1b\[D//' $QEMU_OUTPUT/monitor.txt
+    sed -i 's/\x1b\[K//' $QEMU_OUTPUT/monitor.txt
 
-    file run-qemu-output/*
+    file $QEMU_OUTPUT/*
 
-    grep -i error run-qemu-output/applog.txt	
+    grep -i error $QEMU_OUTPUT/applog.txt	
     local EXIT_STATUS=$?
 
-    cd $RESTORE_PWD
     if [[ EXIT_STATUS == 0 ]]; then log fail: $?; fi
 }
 
