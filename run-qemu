@@ -67,6 +67,7 @@ qemuprocess = subprocess.Popen (["qemu-system-arm",
                                 stdout=subprocess.PIPE,
                                 stderr=subprocess.PIPE)
 
+serial = {}
 def drainall ():
     for s in serial:
         s.drain ()
