@@ -20,8 +20,7 @@ then
     rm -r /c/Ultibo/Core/fpc/3.1.1/source
     rm -r /c/Ultibo/Core/fpc/3.1.1/units/armv8-ultibo
     rm -r /c/Ultibo/Core/languages
-#   rm -r /c/Ultibo/Core/tools
-    ls -l /c/Ultibo/Core/tools
+    rm -r /c/Ultibo/Core/tools
     du -sk /c/Ultibo/Core/fpc/3.1.1/*/*
     du -sk /c/Ultibo
 

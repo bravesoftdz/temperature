@@ -50,7 +50,7 @@ def bash (lines):
 bash (['rm -rf {}/'.format (outputfolder),
        'mkdir -p {}'.format (outputfolder)])
 
-qemuprocess = subprocess.Popen (["c:/Ultibo/Core/tools/qemu-system-arm.exe",
+qemuprocess = subprocess.Popen (["c:/Ultibo/Core/qemu/qemu-system-arm.exe",
                                  "-M", "versatilepb",
                                  "-cpu", "cortex-a8",
                                  "-kernel", "kernel.bin",
