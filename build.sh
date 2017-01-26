@@ -1,7 +1,14 @@
 #!/bin/bash
 
-OUTPUT=out
-QEMU_SCRIPT=run-qemu.tmp
+# Build the ultibo projects in this repo.
+#
+# Runs on linux/x64 with either ultibo installed or docker installed.
+# Runs on windows git bash with ultibo installed.
+# Runs on windows 10 pro git bash with docker installed.
+
+function log {
+    echo $* | tee -a $LOG
+}
 
 function ultibo-bash-quotation {
     if [ "$(which $1)" != "" ]
@@ -25,7 +32,6 @@ function qemu {
     intr echo $*
 }
 
-SCREEN_NUMBER=1
 function screendump {
     qemu screendump screen-$(printf "%02d" $SCREEN_NUMBER).ppm
     ((SCREEN_NUMBER+=1))
@@ -91,106 +97,10 @@ function test-qemu-target {
     cd $RESTORE_PWD
 }
 
-function build-target {
-    echo .... building $4
-    local INCLUDES=-Fi/root/ultibo/core/fpc/source/packages/fv/src
-    rm -rf obj && \
-    mkdir -p obj && \
-    ultibo-bash fpc \
-     -l- \
-     -Sewn \
-     -v0ewn \
-     -B \
-     -Tultibo \
-     -O2 \
-     -Parm \
-     $2 \
-     -Mdelphi \
-     -FuSource \
-     -FEobj \
-     $INCLUDES \
-     @/root/ultibo/core/fpc/bin/$3 \
-     $4 |& tee build.log && \
-\
-    mv kernel* $1/$OUTPUT
-#   if [[ $? -ne 0 ]]; then exit $?; fi
-}
-
-function build-QEMU {
-    build-target $1 "-CpARMV7A -WpQEMUVPB" qemuvpb.cfg $2
-    test-qemu-target $1
-}
-
-function build-RPi {
-    build-target $1 "-CpARMV6 -WpRPIB" rpi.cfg $2
-}
-
-function build-RPi2 {
-    build-target $1 "-CpARMV7A -WpRPI2B" rpi2.cfg $2
-}
-
-function build-RPi3 {
-    build-target $1 "-CpARMV7A -WpRPI3B" rpi3.cfg $2
-}
-
-ULTIBO_BASE=$(pwd)
-ARTIFACTS=$ULTIBO_BASE/$OUTPUT
-rm -rf $ARTIFACTS
-mkdir -p $ARTIFACTS
-
-function build-as {
-    local TARGET=$1
-    local FOLDER=$2
-    local REPO=$3
-    if [[ -d $FOLDER ]]
-    then
-        ls $FOLDER/*.lpr > /dev/null 2>&1
-        if [[ $? == 0 ]]
-        then
-            rm -rf $FOLDER/$OUTPUT
-            mkdir -p $FOLDER/$OUTPUT
-            build-$TARGET $FOLDER $FOLDER/*.lpr
-            local THISOUT=$ARTIFACTS/$REPO/$FOLDER
-            rm -rf $THISOUT
-            mkdir -p $THISOUT
-            cp -a $FOLDER/$OUTPUT/* $THISOUT
-        fi
-    fi
-}
-
-function build-as-2 {
-    local TARGET=$1
-    local FOLDER=$2
-    local REPO=$3
-    local PROGRAM=$4
-    if [[ -d $FOLDER ]]
-    then
-            rm -rf $FOLDER/$OUTPUT
-            mkdir -p $FOLDER/$OUTPUT
-            build-$TARGET $FOLDER $PROGRAM
-            local THISOUT=$ARTIFACTS/$REPO/$FOLDER/$TARGET
-            rm -rf $THISOUT
-            mkdir -p $THISOUT
-            cp -a $FOLDER/$OUTPUT/* $THISOUT
-    fi
-}
-
-function build-demo {
-    cd $ULTIBO_BASE/gh/ultibohub/Demo
-    for TARGET in RPi RPi2 RPi3
-    do
-        build-as-2 $TARGET . ultibohub/Demo "UltiboDemo$TARGET.lpr"
-    done
-}
-
-function build-asphyre {
-    cd $ULTIBO_BASE/gh/ultibohub/Asphyre
-    local SAMPLES_PATH=Samples/FreePascal/Ultibo
-    for SAMPLE_PATH in $SAMPLES_PATH/*
-    do
-        build-as RPi2 $SAMPLE_PATH ultibohub/Asphyre
-    done
-}
+#function build-QEMU {
+#    build-target $1 "-CpARMV7A -WpQEMUVPB" qemuvpb.cfg $2
+#    test-qemu-target $1
+#}
 
 function build-example {
     TARGETS_PATH=$1
@@ -203,19 +113,133 @@ function build-example {
     fi
 }
 
+function build-asphyre {
+    local SAMPLES_PATH=gh/ultibohub/Asphyre/Samples/FreePascal/Ultibo
+    for SAMPLE_PATH in $SAMPLES_PATH/*
+    do
+        build-as RPi2 $SAMPLE_PATH ultibohub/Asphyre
+    done
+}
+
+function build-demo {
+    DEMO_PATH=gh/ultibohub/Demo
+    for TARGET in RPi RPi2 RPi3
+    do
+        mkdir -p $DEMO_PATH/$TARGET
+        build-as $TARGET $DEMO_PATH/$TARGET ultibohub/Demo "$DEMO_PATH/UltiboDemo$TARGET.lpr"
+    done
+}
+
 function build-examples {
-    cd $ULTIBO_BASE/gh/ultibohub/Examples
-    for EXAMPLE in [0-9][0-9]-*
+    local EXAMPLES_PATH=gh/ultibohub/Examples
+    for EXAMPLE in $EXAMPLES_PATH/[0-9][0-9]-*
     do
         build-example $EXAMPLE
     done
-    for EXAMPLE in Advanced/*
+    for EXAMPLE in $EXAMPLES_PATH/Advanced/*
     do
         build-example $EXAMPLE
     done
 }
 
-build-demo
-build-examples
-build-asphyre
+function build-lpr {
+    local LPR_FILE=$1
+    local TARGET_COMPILER_OPTIONS=$2
+    local CFG_NAME=$3
+    local LPR_FOLDER=$4
+    local INCLUDES=-Fi/root/ultibo/core/fpc/source/packages/fv/src
+    log .... building $LPR_FILE
+    rm -rf $LPR_FOLDER/obj && \
+    mkdir -p $LPR_FOLDER/obj && \
+    ultibo-bash fpc \
+     -l- \
+     -v0ewn \
+     -B \
+     -Tultibo \
+     -O2 \
+     -Parm \
+     -Mdelphi \
+     -FuSource \
+     -Fugh/ultibohub/Asphyre/Source \
+     -FE$LPR_FOLDER/obj \
+     $INCLUDES \
+     $TARGET_COMPILER_OPTIONS \
+     @/root/ultibo/core/fpc/bin/$CFG_NAME \
+     $LPR_FILE |& tee -a $LOG && \
+\
+    mv kernel* $LPR_FOLDER/$OUTPUT
+    if [[ $? -ne 0 ]]; then log fail: $?; fi
+}
 
+function build-as {
+    local TARGET=$1
+    local FOLDER=$2
+    local REPO=$3
+    local LPR_FILE=$4
+    if [[ -d $FOLDER ]]
+    then
+        if [[ $LPR_FILE == "" ]]
+        then
+            ls $FOLDER/*.lpr > /dev/null 2>&1
+            if [[ $? -eq 0 ]]
+            then
+                local LPR_FILE=$FOLDER/*.lpr
+            fi
+        fi
+        if [[ $LPR_FILE != "" ]]
+        then
+            rm -rf $FOLDER/$OUTPUT
+            mkdir -p $FOLDER/$OUTPUT
+            case $TARGET in
+                QEMU)
+                    build-lpr $LPR_FILE "-CpARMV7A -WpQEMUVPB" qemuvpb.cfg $FOLDER ;;
+                RPi)
+                    build-lpr $LPR_FILE "-CpARMV6 -WpRPIB" rpi.cfg $FOLDER ;;
+                RPi2)
+                    build-lpr $LPR_FILE "-CpARMV7A -WpRPI2B" rpi2.cfg $FOLDER ;;
+                RPi3)
+                    build-lpr $LPR_FILE "-CpARMV7A -WpRPI3B" rpi3.cfg $FOLDER ;;
+            esac
+            local THISOUT=$OUTPUT/kernels/$FOLDER
+            rm -rf $THISOUT && \
+            mkdir -p $THISOUT && \
+            cp -a $FOLDER/$OUTPUT/* $THISOUT && \
+            if [[ $? -ne 0 ]]; then log fail: $?; fi
+        fi
+    fi
+}
+
+function create-build-summary {
+    cat $LOG | egrep -i '(fail|error|warning|note):' | sort | uniq > $ERRORS
+    log
+    log Summary:
+    log
+    cat $ERRORS | tee -a $LOG
+    log
+    log $(wc $ERRORS)
+    if [[ -s $ERRORS ]]
+    then
+        exit 1
+    fi
+}
+
+ULTIBO_BASE=$(pwd)
+OUTPUT=build-output
+ARTIFACTS=$ULTIBO_BASE/$OUTPUT
+rm -rf $ARTIFACTS
+mkdir -p $ARTIFACTS
+
+QEMU_SCRIPT=run-qemu.tmp
+
+SCREEN_NUMBER=1
+ERRORS=build-errors.txt
+LOG=$OUTPUT/build.log
+rm -rf $OUTPUT
+mkdir -p $OUTPUT
+rm -f $LOG
+
+build-asphyre
+build-examples
+build-demo
+
+create-build-summary
