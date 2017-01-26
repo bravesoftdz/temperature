@@ -106,7 +106,8 @@ function test-qemu-target {
         done
     fi
 
-    file run-qemu-output/*
+    file $QEMU_OUTPUT/*
+
     grep -i error $QEMU_OUTPUT/applog.txt	
     local EXIT_STATUS=$?
 
