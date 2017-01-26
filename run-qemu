@@ -14,13 +14,15 @@ class TcpChannel:
         self.socket.connect (('127.0.0.1', self.port))
         self.logfile = open ('{}/{}.txt'.format (outputfolder, self.name), 'a')
         sleep (1)
-    def writeline (self, line):
+    def writeline (self, line, echo=False):
 #       print '{}>>>>{}'.format (self.name, line)
-        self.logfile.write (line + '\n')
+        if echo:
+            self.logfile.write ('>>>>{}\n'.format (line))
         self.socket.sendall (line + '\n')
     def writekeyboardline (self, line):
 #       print '{}>>>>{}'.format (self.name, line)
-        self.logfile.write (line + '\n')
+        if echo:
+            self.logfile.write ('>>>>{}\n'.format (line))
         self.socket.sendall (line + '\r')
     def drain (self):
         try:
