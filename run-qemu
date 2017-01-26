@@ -23,12 +23,15 @@ class TcpChannel:
         self.logfile.write (line + '\n')
         self.socket.sendall (line + '\r')
     def drain (self):
-        while ([], [], []) != select.select ([self.socket], [], [], 0):
-            sleep (0.001)
-            data = self.socket.recv (1)
-            self.logfile.write (data)
-            if data == "":
-                break
+        try:
+            while ([], [], []) != select.select ([self.socket], [], [], 0):
+                sleep (0.001)
+                data = self.socket.recv (1)
+                self.logfile.write (data)
+                if data == "":
+                    break
+        except:
+            pass
     def finishquit (self, process):
         while process.returncode == None:
             sleep (0.001)
