@@ -87,16 +87,16 @@ function test-qemu-target {
 #   unix_line_endings applog.txt
     sed -i 's/.\x1b.*\x1b\[D//' run-qemu-output/monitor.txt
     sed -i 's/\x1b\[K//' run-qemu-output/monitor.txt
-    ls screen*.ppm > /dev/null 2>&1
-    if [[ $? -eq 0 ]]
-    then
-        for screen in screen*.ppm
-        do
+#   ls screen*.ppm > /dev/null 2>&1
+#   if [[ $? -eq 0 ]]
+#   then
+#       for screen in screen*.ppm
+#       do
 #           ultibo-bash convert $screen ${screen%.ppm}.png &&
-            c/ProgramData/chocolatey/lib/imagemagick.tool/tools/convert $screen ${screen%.ppm}.png && \
-            rm $screen
-        done
-    fi
+#           c/ProgramData/chocolatey/lib/imagemagick.tool/tools/convert $screen ${screen%.ppm}.png && \
+#           rm $screen
+#       done
+#   fi
 
     file run-qemu-output/*
 
