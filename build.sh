@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PATH=/c/Ultibo/Core/fpc/bin:$PATH
+PATH=/c/Ultibo/Core/fpc/3.1.1/bin:$PATH
 
 # Build the ultibo projects in this repo.
 #
