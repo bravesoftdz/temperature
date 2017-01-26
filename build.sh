@@ -1,5 +1,7 @@
 #!/bin/bash
 
+PATH=/c/Ultibo/Core/fpc/bin:$PATH
+
 # Build the ultibo projects in this repo.
 #
 # Runs on linux/x64 with either ultibo installed or docker installed.
