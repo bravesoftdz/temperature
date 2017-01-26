@@ -70,7 +70,7 @@ qemuprocess = subprocess.Popen (["qemu-system-arm",
 serial = {}
 def drainall ():
     for s in serial:
-        s.drain ()
+        s [i].drain ()
     monitor.drain ()
 
 sleep (2)
@@ -82,7 +82,7 @@ drainall ()
 monitor.writeline ('screendump {}/screen-01.ppm'.format (outputfolder))
 for s in serial:
     for i in range (1, 10):
-        s.writekeyboardline ('line {}'.format (i))
+        serial [s].writekeyboardline ('line {}'.format (i))
 sleep (7)
 monitor.writeline ('screendump {}/screen-02.ppm'.format (outputfolder))
 
