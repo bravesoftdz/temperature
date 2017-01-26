@@ -69,10 +69,8 @@ function ultibo-bash {
 
 function unix_line_endings {
     local FILE=$1
-    which tr
-    which mv
-    echo file is $FILE
     tr -d \\r < $FILE > tmp && \
+    which mv
     /usr/bin/mv tmp $FILE
 }
 
@@ -89,19 +87,17 @@ function test-qemu-target {
     if [[ $? -ne 0 ]]; then log fail: $?; fi
     cd $RESTORE_PWD
 
-    ps
-    set -x
     unix_line_endings $QEMU_OUTPUT/monitor.txt
-#   unix_line_endings $QEMU_OUTPUT/applog.txt
-#   unix_line_endings $QEMU_OUTPUT/apilog.txt
+    unix_line_endings $QEMU_OUTPUT/applog.txt
+    unix_line_endings $QEMU_OUTPUT/apilog.txt
  
-#   sed -i 's/.\x1b.*\x1b\[D//' $QEMU_OUTPUT/monitor.txt
-#   sed -i 's/\x1b\[K//' $QEMU_OUTPUT/monitor.txt
+    sed -i 's/.\x1b.*\x1b\[D//' $QEMU_OUTPUT/monitor.txt
+    sed -i 's/\x1b\[K//' $QEMU_OUTPUT/monitor.txt
 
-#   grep -i error $QEMU_OUTPUT/applog.txt	
-#   local EXIT_STATUS=$?
+    grep -i error $QEMU_OUTPUT/applog.txt	
+    local EXIT_STATUS=$?
 
-#   if [[ EXIT_STATUS == 0 ]]; then log fail: $?; fi
+    if [[ EXIT_STATUS == 0 ]]; then log fail: $?; fi
 }
 
 function build-example {
