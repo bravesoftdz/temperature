@@ -69,8 +69,8 @@ qemuprocess = subprocess.Popen (["qemu-system-arm",
 
 serial = {}
 def drainall ():
-    for s in serial:
-        s [i].drain ()
+    for i in serial:
+        serial [i].drain ()
     monitor.drain ()
 
 sleep (2)
