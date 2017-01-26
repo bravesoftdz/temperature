@@ -19,7 +19,7 @@ class TcpChannel:
         if echo:
             self.logfile.write ('>>>>{}\n'.format (line))
         self.socket.sendall (line + '\n')
-    def writekeyboardline (self, line):
+    def writekeyboardline (self, line, echo=False):
 #       print '{}>>>>{}'.format (self.name, line)
         if echo:
             self.logfile.write ('>>>>{}\n'.format (line))
