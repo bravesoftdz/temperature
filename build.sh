@@ -225,9 +225,6 @@ function create-build-summary {
 
 ULTIBO_BASE=$(pwd)
 OUTPUT=build-output
-ARTIFACTS=$ULTIBO_BASE/$OUTPUT
-rm -rf $ARTIFACTS
-mkdir -p $ARTIFACTS
 
 QEMU_SCRIPT=run-qemu.tmp
 

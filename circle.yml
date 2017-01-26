@@ -12,5 +12,5 @@ stages:
         command: ./build.sh
       - name: Save artifacts
         type: artifacts-store
-        path: out
+        path: build-output
         destination: ultibo-snapshot
