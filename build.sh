@@ -94,6 +94,19 @@ function test-qemu-target {
     sed -i 's/.\x1b.*\x1b\[D//' $QEMU_OUTPUT/monitor.txt
     sed -i 's/\x1b\[K//' $QEMU_OUTPUT/monitor.txt
 
+    ls $QEMU_OUTPUT/screen*.ppm > /dev/null 2>&1
+    if [[ $? -eq 0 ]]
+    then
+        for screen in $QEMU_OUTPUT/screen*.ppm
+        do
+#           local CONVERT=ultibo-bash convert
+            local CONVERT=/c/ProgramData/chocolatey/lib/imagemagick.tool/tools/convert.exe
+            $CONVERT $screen ${screen%.ppm}.png && \
+            rm $screen
+        done
+    fi
+
+    file run-qemu-output/*
     grep -i error $QEMU_OUTPUT/applog.txt	
     local EXIT_STATUS=$?
 
