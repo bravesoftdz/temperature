@@ -24,44 +24,44 @@ function ultibo-bash {
     eval $(ultibo-bash-quotation $*)
 }
 
-function intr {
-    echo $* >> $QEMU_SCRIPT
-}
+#function intr {
+#    echo $* >> $QEMU_SCRIPT
+#}
 
-function qemu {
-    intr echo $*
-}
+#function qemu {
+#    intr echo $*
+#}
 
-function screendump {
-    qemu screendump screen-$(printf "%02d" $SCREEN_NUMBER).ppm
-    ((SCREEN_NUMBER+=1))
-}
+#function screendump {
+#    qemu screendump screen-$(printf "%02d" $SCREEN_NUMBER).ppm
+#    ((SCREEN_NUMBER+=1))
+#}
 
-function make-qemu-script {
-    touch $QEMU_SCRIPT
-\
-    intr sleep 2
-    qemu -en \\\\001c
-    screendump
-    intr sleep 2
-    screendump
-    qemu quit
-\
-    chmod u+x $QEMU_SCRIPT
-}
+#function make-qemu-script {
+#    touch $QEMU_SCRIPT
+#\
+#    intr sleep 2
+#    qemu -en \\\\001c
+#    screendump
+#    intr sleep 2
+#    screendump
+#    qemu quit
+#\
+#    chmod u+x $QEMU_SCRIPT
+#}
 
-function run-qemu {
-    echo .... running qemu
-    QEMU=$(ultibo-bash-quotation qemu-system-arm \
-     -M versatilepb \
-     -cpu cortex-a8 \
-     -kernel kernel.bin \
-     -m 256M \
-     -display none \
-     -serial mon:stdio)
-    eval "./$QEMU_SCRIPT | $QEMU > raw.log 2>&1" && \
-    cat raw.log | egrep -iv '^(alsa|pulseaudio:|audio:)' > serial.log
-}
+#function run-qemu {
+#    echo .... running qemu
+#    QEMU=$(ultibo-bash-quotation qemu-system-arm \
+#     -M versatilepb \
+#     -cpu cortex-a8 \
+#     -kernel kernel.bin \
+#     -m 256M \
+#     -display none \
+#     -serial mon:stdio)
+#    eval "./$QEMU_SCRIPT | $QEMU > raw.log 2>&1" && \
+#    cat raw.log | egrep -iv '^(alsa|pulseaudio:|audio:)' > serial.log
+#}
 
 function unix_line_endings {
     tr -d \\r < $1 > tmp && \
@@ -69,18 +69,20 @@ function unix_line_endings {
 }
 
 function test-qemu-target {
+    echo .... running qemu
     local RESTORE_PWD=$(pwd)
     local FOLDER=$1
     cd $FOLDER/$OUTPUT && \
     \
-    make-qemu-script && \
-    run-qemu
+#   make-qemu-script && \
+#   run-qemu
+    $RESTORE_PWD/run-qemu
     if [[ $? -ne 0 ]]; then log fail: $?; fi
 
-    unix_line_endings raw.log
-    unix_line_endings serial.log
-    sed -i 's/.\x1b.*\x1b\[D//' serial.log
-    sed -i 's/\x1b\[K//' serial.log
+    unix_line_endings run-qemu-output/monitor.txt
+#   unix_line_endings applog.txt
+    sed -i 's/.\x1b.*\x1b\[D//' run-qemu-output/monitor.txt
+    sed -i 's/\x1b\[K//' run-qemu-output/monitor.txt
     ls screen*.ppm > /dev/null 2>&1
     if [[ $? -eq 0 ]]
     then
@@ -91,7 +93,9 @@ function test-qemu-target {
         done
     fi
 
-    grep -i error serial.log
+    file run-qemu-output/*
+
+    grep -i error run-qemu-output/applog.txt	
     local EXIT_STATUS=$?
 
     cd $RESTORE_PWD
