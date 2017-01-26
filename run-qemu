@@ -78,6 +78,7 @@ monitor = TcpChannel ('monitor', 38004)
 for i in range (4):
     serial [i] = TcpChannel ('serial{}'.format (i),  38000 + i)
 
+sleep (2)
 drainall ()
 monitor.writeline ('screendump {}/screen-01.ppm'.format (outputfolder))
 for s in serial:
