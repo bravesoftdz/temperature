@@ -85,24 +85,26 @@ function test-qemu-target {
     if [[ $? -ne 0 ]]; then log fail: $?; fi
     cd $RESTORE_PWD
 
-    set -x
+#   set -x
     ps
-    unix_line_endings $QEMU_OUTPUT/monitor.txt
-    ps
-    unix_line_endings $QEMU_OUTPUT/applog.txt
-    ps
-    unix_line_endings $QEMU_OUTPUT/apilog.txt
-    ps
-    
-    sed -i 's/.\x1b.*\x1b\[D//' $QEMU_OUTPUT/monitor.txt
-    ps
-    sed -i 's/\x1b\[K//' $QEMU_OUTPUT/monitor.txt
-    ps
+    pwd
+#   unix_line_endings $QEMU_OUTPUT/monitor.txt
+#   ps
+#   unix_line_endings $QEMU_OUTPUT/applog.txt
+#   ps
+#   unix_line_endings $QEMU_OUTPUT/apilog.txt
+#   ps
+ 
+#   sed -i 's/.\x1b.*\x1b\[D//' $QEMU_OUTPUT/monitor.txt
+#   ps
+#   sed -i 's/\x1b\[K//' $QEMU_OUTPUT/monitor.txt
+#   ps
 
-    grep -i error $QEMU_OUTPUT/applog.txt	
-    local EXIT_STATUS=$?
+#   grep -i error $QEMU_OUTPUT/applog.txt	
+#   local EXIT_STATUS=$?
 
-    if [[ EXIT_STATUS == 0 ]]; then log fail: $?; fi
+#   if [[ EXIT_STATUS == 0 ]]; then log fail: $?; fi
+    ls
 }
 
 function build-example {
