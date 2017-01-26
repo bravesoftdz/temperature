@@ -73,7 +73,7 @@ function unix_line_endings {
 }
 
 function test-qemu-target {
-    echo .... running qemu
+    log .... running qemu
     local RESTORE_PWD=$(pwd)
     local FOLDER=$1
     cd $FOLDER/$OUTPUT && \
@@ -81,6 +81,7 @@ function test-qemu-target {
 #   make-qemu-script && \
 #   run-qemu
     python $RESTORE_PWD/run-qemu
+    log ......... done
     if [[ $? -ne 0 ]]; then log fail: $?; fi
 
     unix_line_endings run-qemu-output/monitor.txt
