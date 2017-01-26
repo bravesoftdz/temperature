@@ -105,7 +105,6 @@ function test-qemu-target {
 #   local EXIT_STATUS=$?
 
 #   if [[ EXIT_STATUS == 0 ]]; then log fail: $?; fi
-    ls
 }
 
 function build-example {
