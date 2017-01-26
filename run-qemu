@@ -99,7 +99,3 @@ monitor.finishquit (qemuprocess)
 monitor.close ()
 for i in serial:
     serial [i].close ()
-
-bash (['convert {0}/screen-01.ppm {0}/screen-01.png'.format (outputfolder),
-       'convert {0}/screen-02.ppm {0}/screen-02.png'.format (outputfolder),
-       'rm {}/*.ppm'.format (outputfolder)])
