@@ -237,7 +237,7 @@ mkdir -p $OUTPUT
 rm -f $LOG
 
 build-asphyre
-uild-examples
-#build-demo
+build-examples
+build-demo
 
 create-build-summary
