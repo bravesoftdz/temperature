@@ -68,6 +68,21 @@ function unix_line_endings {
     mv tmp $1
 }
 
+function convert-frames {
+    local BYTES=$1
+    local DEPTH=$2
+    ls run-qemu-output/frame*-1920x1080x$BYTES.raw > /dev/null 2>&1
+    if [[ $? -eq 0 ]]
+    then
+        for frame in run-qemu-output/frame*-1920x1080x$BYTES.raw
+        do
+            ultibo-bash convert -size 1920x1080 -depth $DEPTH rgb:$frame ${frame%.raw}.png && \
+            echo ls $frame
+            echo rm $frame
+        done
+    fi
+}
+
 function test-qemu-target {
     echo .... running qemu
     local RESTORE_PWD=$(pwd)
@@ -95,16 +110,7 @@ function test-qemu-target {
             rm $screen
         done
     fi
-    ls run-qemu-output/frame*-1920x1080x2.raw > /dev/null 2>&1
-    if [[ $? -eq 0 ]]
-    then
-        for frame in run-qemu-output/frame*-1920x1080x2.raw
-        do
-            ultibo-bash convert -size 1920x1080 -depth 16 rgb:$frame ${frame%.raw}.png && \
-            echo ls $frame
-            echo rm $frame
-        done
-    fi
+    convert-frames 3 8
 
     file run-qemu-output/*
 

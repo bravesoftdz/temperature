@@ -17,8 +17,8 @@ end;
 
 procedure CaptureScreen;
 const
- ColorFormat=COLOR_FORMAT_RGB15;
- BytesPerPixel=2;
+ ColorFormat=COLOR_FORMAT_RGB24;
+ BytesPerPixel=3;
 begin
  if not Assigned(ScreenBuffer) then
   ScreenBuffer:=GetMem(ScreenWidth * ScreenHeight * BytesPerPixel);
