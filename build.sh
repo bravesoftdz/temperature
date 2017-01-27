@@ -91,12 +91,12 @@ function test-qemu-target {
     time python $RESTORE_PWD/run-qemu
     if [[ $? -ne 0 ]]; then log fail: $?; fi
 
-    for f in run-qemu-output/*.txt
+    for textfile in run-qemu-output/*.txt
     do
-        unix_line_endings f
+        unix_line_endings $textfile
     done
-    sed -i 's/.\x1b.*\x1b\[D//' run-qemu-output/monitor.txt
-    sed -i 's/\x1b\[K//' run-qemu-output/monitor.txt
+    sed -i 's/.\x1b.*\x1b\[D//' run-qemu-output/qemumonitor.txt
+    sed -i 's/\x1b\[K//' run-qemu-output/qemumonitor.txt
     ls run-qemu-output/screen*.ppm > /dev/null 2>&1
     if [[ $? -eq 0 ]]
     then
