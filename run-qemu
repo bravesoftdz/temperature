@@ -47,7 +47,7 @@ class TcpChannel:
                         index = self.linebuffer.find ('frame buffer')
                         if index != -1:
 #                           print self.linebuffer
-                            fb = parse.parse ('{} frame buffer at {address} -size {width:d}x{height:d} -depth {depth:d}', self.linebuffer)
+                            fb = parse.parse ('{} frame buffer at {address} -size {width:d}x{height:d}x{depth:d}', self.linebuffer)
                             if fb:
                                 framecapture (fb.named ['address'], fb.named ['width'], fb.named ['height'], fb.named ['depth'])
                         self.linebuffer = ""
@@ -101,7 +101,7 @@ def screendump ():
 def framecapture (address, width, height, depth):
     print 'framecapture', address, width, height, depth
     global framenumber
-    monitor.writeline ('memsave {} {} {}/frame-{:02d}-{}x{}x{}.raw'.format (address, width * height * depth / 8, outputfolder, framenumber, width, height, depth / 8))
+    monitor.writeline ('memsave {} {} {}/frame-{:02d}-{}x{}x{}.fb'.format (address, width * height * depth, outputfolder, framenumber, width, height, depth))
     framenumber = framenumber + 1
 def sleep (seconds, message=''):
 #   print 'sleep {} {}'.format (seconds, message)

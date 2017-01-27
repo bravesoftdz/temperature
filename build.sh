@@ -69,14 +69,12 @@ function unix_line_endings {
 }
 
 function convert-frames {
-    local BYTES=$1
-    local DEPTH=$2
-    ls run-qemu-output/frame*-1920x1080x$BYTES.raw > /dev/null 2>&1
+    ls run-qemu-output/frame*-1920x1080x3.fb > /dev/null 2>&1
     if [[ $? -eq 0 ]]
     then
-        for frame in run-qemu-output/frame*-1920x1080x$BYTES.raw
+        for frame in run-qemu-output/frame*-1920x1080x3.fb
         do
-            ultibo-bash convert -size 1920x1080 -depth $DEPTH rgb:$frame ${frame%.raw}.png && \
+            ultibo-bash convert -size 1920x1080 -depth 8 rgb:$frame ${frame%.fb}.png && \
             rm $frame
         done
     fi
@@ -109,7 +107,7 @@ function test-qemu-target {
             rm $screen
         done
     fi
-    convert-frames 3 8
+    convert-frames
 
     file run-qemu-output/*
 

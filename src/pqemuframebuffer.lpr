@@ -24,8 +24,8 @@ begin
   ScreenBuffer:=GetMem(ScreenWidth * ScreenHeight * BytesPerPixel);
  ConsoleDeviceGetImage(ConsoleDeviceGetDefault,0,0,ScreenBuffer,
                        ScreenWidth,ScreenHeight,ColorFormat,0);
- LoggingOutput(Format('frame buffer at 0x%x -size %dx%d -depth %d',
-                      [LongWord(ScreenBuffer),ScreenWidth,ScreenHeight,BytesPerPixel * 8]));
+ LoggingOutput(Format('frame buffer at 0x%x -size %dx%dx%d',
+                      [LongWord(ScreenBuffer),ScreenWidth,ScreenHeight,BytesPerPixel]));
 end;
 
 procedure Test;
