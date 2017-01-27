@@ -77,8 +77,7 @@ function convert-frames {
         for frame in run-qemu-output/frame*-1920x1080x$BYTES.raw
         do
             ultibo-bash convert -size 1920x1080 -depth $DEPTH rgb:$frame ${frame%.raw}.png && \
-            echo ls $frame
-            echo rm $frame
+            rm $frame
         done
     fi
 }
