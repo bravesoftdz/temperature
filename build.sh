@@ -86,13 +86,22 @@ function test-qemu-target {
     unix_line_endings run-qemu-output/serial3.txt
     sed -i 's/.\x1b.*\x1b\[D//' run-qemu-output/monitor.txt
     sed -i 's/\x1b\[K//' run-qemu-output/monitor.txt
-    ls screen*.ppm > /dev/null 2>&1
+    ls run-qemu-output/screen*.ppm > /dev/null 2>&1
     if [[ $? -eq 0 ]]
     then
-        for screen in screen*.ppm
+        for screen in run-qemu-output/screen*.ppm
         do
             ultibo-bash convert $screen ${screen%.ppm}.png && \
             rm $screen
+        done
+    fi
+    ls run-qemu-output/frame*-1920x1080x2.raw > /dev/null 2>&1
+    if [[ $? -eq 0 ]]
+    then
+        for frame in run-qemu-output/frame*-1920x1080x2.raw
+        do
+            ultibo-bash convert -size 1920x1080 -depth 16 rgb:$frame ${frame%.raw}.png && \
+            rm $frame
         done
     fi
 
