@@ -107,7 +107,7 @@ def sleep (seconds, message=''):
 #   print 'sleep {} {}'.format (seconds, message)
     time.sleep (seconds)
 
-monitor = TcpChannel ('monitor', 38004)
+monitor = TcpChannel ('qemumonitor', 38004)
 for i in range (4):
     serial [i] = TcpChannel ('serial{}'.format (i),  38000 + i)
 
