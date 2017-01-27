@@ -101,7 +101,8 @@ function test-qemu-target {
         for frame in run-qemu-output/frame*-1920x1080x2.raw
         do
             ultibo-bash convert -size 1920x1080 -depth 16 rgb:$frame ${frame%.raw}.png && \
-            rm $frame
+            echo ls $frame
+            echo rm $frame
         done
     fi
 
