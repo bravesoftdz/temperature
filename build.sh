@@ -146,15 +146,14 @@ function build-demo {
 
 function build-examples {
     local EXAMPLES_PATH=gh/ultibohub/Examples
-#   for EXAMPLE in $EXAMPLES_PATH/[0-9][0-9]-*
-    for EXAMPLE in $EXAMPLES_PATH/13-*
+    for EXAMPLE in $EXAMPLES_PATH/[0-9][0-9]-*
     do
         build-example $EXAMPLE
     done
-#   for EXAMPLE in $EXAMPLES_PATH/Advanced/*
-#   do
-#       build-example $EXAMPLE
-#   done
+    for EXAMPLE in $EXAMPLES_PATH/Advanced/*
+    do
+        build-example $EXAMPLE
+    done
 }
 
 function build-lpr {
@@ -250,8 +249,8 @@ rm -f $LOG
 
 python -m pip install parse
 
-#build-asphyre
+build-asphyre
 build-examples
-#build-demo
+build-demo
 
 create-build-summary
