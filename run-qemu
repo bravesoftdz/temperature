@@ -44,6 +44,12 @@ class TcpChannel:
                         pass
                     elif c == '\n':
 #                       print '{}<<<<{}'.format(self.name, self.linebuffer)
+                        index = self.linebuffer.find ('program halt')
+                        if index != -1:
+#                           print self.linebuffer
+                            global stopping
+                            stopping = True
+                            monitor.writeline ('quit')
                         index = self.linebuffer.find ('frame buffer')
                         if index != -1:
 #                           print self.linebuffer
@@ -111,22 +117,32 @@ monitor = TcpChannel ('qemumonitor', 38004)
 for i in range (4):
     serial [i] = TcpChannel ('serial{}'.format (i),  38000 + i)
 
-drainall ()
-#screendump ()
-for s in serial:
-    for i in range (1, 10):
-        serial [s].writekeyboardline ('line {}'.format (i))
-sleep (12)
-#screendump ()
+def runold ():
+    drainall ()
+    #screendump ()
+    for s in serial:
+        for i in range (1, 10):
+            serial [s].writekeyboardline ('line {}'.format (i))
+    sleep (12)
+    #screendump ()
 
-drainall ()
-monitor.writeline ('quit')
-sleep (1)
-drainall ()
-monitor.finishquit (qemuprocess)
+    drainall ()
+    monitor.writeline ('quit')
+    sleep (1)
+    drainall ()
+    monitor.finishquit (qemuprocess)
 
-#print
-#print 'qemu return code', qemuprocess.returncode
+    #print
+    #print 'qemu return code', qemuprocess.returncode
+
+def run ():
+    global stopping
+    stopping = False
+    while not stopping:
+        drainall ()
+    monitor.finishquit (qemuprocess)
+
+run ()
 
 monitor.close ()
 for i in serial:

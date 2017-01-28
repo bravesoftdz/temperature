@@ -1,5 +1,5 @@
+build-output/
 obj/
-out/
 *.elf
 *.bin
 *.img

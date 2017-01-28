@@ -1,12 +1,15 @@
 program pQemuFrameBuffer;
-uses QEMUVersatilePB,Console,GlobalConfig,GlobalConst,FrameBuffer,Logging,Platform,Serial,SysUtils,Crt;
+
+uses QEMUVersatilePB,Console,GlobalConfig,GlobalConst,FrameBuffer,Logging,Platform,Threads,Serial,SysUtils,Crt;
+
 const
  ScreenWidth=1920;
  ScreenHeight=1080;
+
 var
  Fb:pFrameBufferDevice;
  FramebufferProperties:TFramebufferProperties;
- ScreenBuffer:Pointer;
+ SavedFrameBuffer:Pointer;
 
 procedure StartLogging;
 begin
@@ -15,20 +18,22 @@ begin
  LoggingDeviceSetDefault(LoggingDeviceFindByType(LOGGING_TYPE_SERIAL));
 end;
 
-procedure CaptureScreen;
+// Save frame buffer in memory and write signal to log
+procedure SaveFrameBuffer;
 const
  ColorFormat=COLOR_FORMAT_RGB24;
  BytesPerPixel=3;
 begin
- if not Assigned(ScreenBuffer) then
-  ScreenBuffer:=GetMem(ScreenWidth * ScreenHeight * BytesPerPixel);
- ConsoleDeviceGetImage(ConsoleDeviceGetDefault,0,0,ScreenBuffer,
+ if not Assigned(SavedFrameBuffer) then
+  SavedFrameBuffer:=GetMem(ScreenWidth * ScreenHeight * BytesPerPixel);
+ ConsoleDeviceGetImage(ConsoleDeviceGetDefault,0,0,SavedFrameBuffer,
                        ScreenWidth,ScreenHeight,ColorFormat,0);
  LoggingOutput(Format('frame buffer at 0x%x -size %dx%dx%d',
-                      [LongWord(ScreenBuffer),ScreenWidth,ScreenHeight,BytesPerPixel]));
+                      [LongWord(SavedFrameBuffer),ScreenWidth,ScreenHeight,BytesPerPixel]));
 end;
 
-procedure Test;
+// Initialize frame buffer to larger, typical size
+procedure InitializeFrameBuffer;
 begin
  Fb:=FrameBufferDeviceGetDefault;
  FrameBufferDeviceRelease(Fb);
@@ -43,17 +48,22 @@ begin
  FrameBufferDeviceSetDefault(Fb);
  FrameBufferDeviceGetProperties(Fb,@FrameBufferProperties);
  ConsoleWindowCreate(ConsoleDeviceGetDefault,CONSOLE_POSITION_FULLSCREEN,True);
- WriteLn('Test');
 end;
+
+var
+ FrameCounter:Integer;
 
 begin
 StartLogging;
-ScreenBuffer:=nil;
-Test;
-while True do
+SavedFrameBuffer:=nil;
+InitializeFrameBuffer;
+for FrameCounter:=1 to 3 do
  begin
-  WriteLn('Frame');
-  CaptureScreen;
-  Sleep(5*1000);
+  if FrameCounter <> 1 then
+   Sleep(3*1000);
+  WriteLn(Format('Frame',[FrameCounter]));
+  SaveFrameBuffer;
  end;
+LoggingOutput('program halt');
+ThreadHalt (0);
 end.
