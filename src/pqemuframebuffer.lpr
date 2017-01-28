@@ -57,6 +57,7 @@ begin
 StartLogging;
 SavedFrameBuffer:=nil;
 InitializeFrameBuffer;
+writeLn(Format('Window character coordinates (%d,%d) (%d,%d)',[WindMinX,WindMinY,WindMaxX,WindMaxY]));
 for FrameCounter:=1 to 3 do
  begin
   if FrameCounter <> 1 then
