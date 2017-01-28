@@ -140,6 +140,7 @@ def run ():
     stopping = False
     while not stopping:
         drainall ()
+    sleep (1)
     monitor.finishquit (qemuprocess)
 
 run ()

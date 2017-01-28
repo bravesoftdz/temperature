@@ -61,7 +61,7 @@ for FrameCounter:=1 to 3 do
  begin
   if FrameCounter <> 1 then
    Sleep(3*1000);
-  WriteLn(Format('Frame',[FrameCounter]));
+  WriteLn(Format('Frame %d',[FrameCounter]));
   SaveFrameBuffer;
  end;
 LoggingOutput('program halt');
