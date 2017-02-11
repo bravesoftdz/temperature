@@ -1,7 +1,7 @@
 #!/bin/bash
 
-/usr/bin/find /c/Ultibo/Core -iname platform.inc
-exit
+/usr/bin/find /c/Ultibo -iname platform.inc
+grep -ir platform.inc
 
 #INSTALL_PATH=/root/ultibo/core/fpc/bin/
 INSTALL_PATH=/c/Ultibo/Core/fpc/3.1.1/bin/i386-win32
@@ -252,8 +252,8 @@ rm -f $LOG
 
 python -m pip install parse
 
-build-asphyre
 build-examples
+build-asphyre
 build-demo
 
 create-build-summary
