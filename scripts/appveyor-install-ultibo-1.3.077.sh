@@ -1,7 +1,7 @@
 #!/bin/bash
 
-ULTIBO_VERSION=1.3.015
-ULTIBO_RTL_VERSION=1.3.015
+ULTIBO_VERSION=1.3.077
+ULTIBO_RTL_VERSION=1.3.077
 ULTIBO_SOURCE=/c/Ultibo/Core/fpc/3.1.1/source
 
 if [[ ! -e /c/Ultibo ]]
@@ -24,10 +24,10 @@ then
     du -sk /c/Ultibo/Core/fpc/3.1.1/*/*
     du -sk /c/Ultibo
 
-    if [[ "$ULTIBO_RTL_VERSION" == "$ULTIBO_VERSION" ]]
-    then
-        appveyor AddMessage "(skipped) building ultibo rtl using __buildrtl.bat from $ULTIBO_RTL_VERSION"
-    else
+#   if [[ "$ULTIBO_RTL_VERSION" == "$ULTIBO_VERSION" ]]
+#   then
+#       appveyor AddMessage "(skipped) building ultibo rtl using __buildrtl.bat from $ULTIBO_RTL_VERSION"
+#   else
         appveyor AddMessage "building ultibo rtl using __buildrtl.bat from $ULTIBO_RTL_VERSION"
         curl -fsSL -o ultibo-rtl-update.zip https://github.com/ultibohub/Core/archive/master.zip
         ls *.zip
@@ -46,7 +46,7 @@ then
         cd $ULTIBO_SOURCE
         cmd //c __buildrtl.bat
         cd $APPVEYOR_BUILD_FOLDER
-    fi
+#   fi
     
     appveyor AddMessage "ultibo installation complete"
 fi
