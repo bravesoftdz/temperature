@@ -161,7 +161,7 @@ function build-lpr {
     local TARGET_COMPILER_OPTIONS=$2
     local CFG_NAME=$3
     local LPR_FOLDER=$4
-    local INCLUDES=/c/Ultibo/Core/fpc/3.1.1/source/packages/fv/src
+    local INCLUDES=-Fi/c/Ultibo/Core/fpc/3.1.1/source/packages/fv/src
     ls /c/Ultibo/Core/fpc/3.1.1/source/packages
     log .... building $LPR_FILE
     rm -rf $LPR_FOLDER/obj && \
@@ -177,7 +177,7 @@ function build-lpr {
      -FuSource \
      -Fugh/ultibohub/Asphyre/Source \
      -FE$LPR_FOLDER/obj \
-     -Fi$INCLUDES \
+     $INCLUDES \
      $TARGET_COMPILER_OPTIONS \
      @$INSTALL_PATH/$CFG_NAME \
      $LPR_FILE |& tee -a $LOG && \

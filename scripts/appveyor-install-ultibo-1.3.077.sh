@@ -52,7 +52,6 @@ then
     rm -r /c/Ultibo/Core/fpc/3.1.1/source
     mkdir -p /c/Ultibo/Core/fpc/3.1.1/source/packages
     /usr/bin/mv packages-fv /c/Ultibo/Core/fpc/3.1.1/source/packages/fv
-    ls /c/Ultibo/Core/fpc/3.1.1/source/packages/fv/src
     
     du -sk /c/Ultibo
 
