@@ -43,9 +43,8 @@ then
         ls $ULTIBO_SOURCE/rtl/ultibo
 
         appveyor AddMessage "compiling ultibo rtl"
-        cp -a scripts/__buildrtl-$ULTIBO_RTL_VERSION.bat $ULTIBO_SOURCE
         cd $ULTIBO_SOURCE
-        cmd //c __buildrtl-$ULTIBO_RTL_VERSION.bat
+        cmd //c __buildrtl.bat
         cd $APPVEYOR_BUILD_FOLDER
     fi
     
