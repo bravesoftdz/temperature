@@ -207,7 +207,7 @@ function build-as {
             case $TARGET in
                 QEMU)
                     build-lpr $LPR_FILE "-CpARMV7A -WpQEMUVPB" qemuvpb.cfg $FOLDER
-                    test-qemu-target $FOLDER ;;
+                    ;; # test-qemu-target $FOLDER ;;
                 RPi)
                     build-lpr $LPR_FILE "-CpARMV6 -WpRPIB" rpi.cfg $FOLDER ;;
                 RPi2)
