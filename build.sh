@@ -157,12 +157,13 @@ function build-examples {
 }
 
 function build-lpr {
+    set -x
     local LPR_FILE=$1
     local TARGET_COMPILER_OPTIONS=$2
     local CFG_NAME=$3
     local LPR_FOLDER=$4
     local INCLUDES=-Fi/c/Ultibo/Core/fpc/3.1.1/source/packages/fv/src
-    ls /c/Ultibo/Core/fpc/3.1.1/source/packages
+    ls /c/Ultibo/Core/fpc/3.1.1/source/packages/fv/src
     log .... building $LPR_FILE
     rm -rf $LPR_FOLDER/obj && \
     mkdir -p $LPR_FOLDER/obj && \
