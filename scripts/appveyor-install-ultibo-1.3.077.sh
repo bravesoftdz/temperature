@@ -17,7 +17,6 @@ then
     rm -r /c/Ultibo/Core/docs
     rm -r /c/Ultibo/Core/examples
     rm -r /c/Ultibo/Core/firmware
-#   rm -r /c/Ultibo/Core/fpc/3.1.1/source
     rm -r /c/Ultibo/Core/fpc/3.1.1/units/armv8-ultibo
     rm -r /c/Ultibo/Core/languages
     rm -r /c/Ultibo/Core/tools
@@ -47,6 +46,10 @@ then
         cmd //c __buildrtl.bat
         cd $APPVEYOR_BUILD_FOLDER
 #   fi
-    
+
+    du -sk /c/Ultibo
+    rm -r /c/Ultibo/Core/fpc/3.1.1/source
+    du -sk /c/Ultibo
+
     appveyor AddMessage "ultibo installation complete"
 fi
