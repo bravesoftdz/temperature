@@ -162,7 +162,9 @@ function build-lpr {
     local CFG_NAME=$3
     local LPR_FOLDER=$4
     local INCLUDES=/c/Ultibo/Core/fpc/3.1.1/source/packages/fv/src
-    ls $INCLUDES
+    ls /c/Ultibo/Core/fpc/3.1.1/
+    ls /c/Ultibo/Core/fpc/3.1.1/source/
+    ls /c/Ultibo/Core/fpc/3.1.1/source/packages
     log .... building $LPR_FILE
     rm -rf $LPR_FOLDER/obj && \
     mkdir -p $LPR_FOLDER/obj && \
