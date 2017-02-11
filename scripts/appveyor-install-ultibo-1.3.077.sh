@@ -48,10 +48,10 @@ then
     fi
 
     du -sk /c/Ultibo
-    mv /c/Ultibo/Core/fpc/3.1.1/source/packages/fv packages-fv
+    /usr/bin/mv /c/Ultibo/Core/fpc/3.1.1/source/packages/fv packages-fv
     rm -r /c/Ultibo/Core/fpc/3.1.1/source
     mkdir -p /c/Ultibo/Core/fpc/3.1.1/source/packages
-    mv packages-fv /c/Ultibo/Core/fpc/3.1.1/source/packages/fv
+    /usr/bin/mv packages-fv /c/Ultibo/Core/fpc/3.1.1/source/packages/fv
     ls /c/Ultibo/Core/fpc/3.1.1/source/packages/fv/src
     
     du -sk /c/Ultibo
