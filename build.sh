@@ -1,8 +1,5 @@
 #!/bin/bash
 
-/usr/bin/find /c/Ultibo -iname platform.inc
-grep -ir platform.inc
-
 #INSTALL_PATH=/root/ultibo/core/fpc/bin/
 INSTALL_PATH=/c/Ultibo/Core/fpc/3.1.1/bin/i386-win32
 PATH=$INSTALL_PATH:$PATH
@@ -164,7 +161,7 @@ function build-lpr {
     local TARGET_COMPILER_OPTIONS=$2
     local CFG_NAME=$3
     local LPR_FOLDER=$4
-    local INCLUDES=-Fi/root/ultibo/core/fpc/source/packages/fv/src
+    local INCLUDES=-Fi/c/Ultibo/Core/fpc/source/packages/fv/src
     log .... building $LPR_FILE
     rm -rf $LPR_FOLDER/obj && \
     mkdir -p $LPR_FOLDER/obj && \
