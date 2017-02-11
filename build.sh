@@ -1,5 +1,7 @@
 #!/bin/bash
 
+find /c/Ultibo/Core -iname platform.inc
+
 #INSTALL_PATH=/root/ultibo/core/fpc/bin/
 INSTALL_PATH=/c/Ultibo/Core/fpc/3.1.1/bin/i386-win32
 PATH=$INSTALL_PATH:$PATH
@@ -70,7 +72,7 @@ function ultibo-bash {
 function unix_line_endings {
     local FILE=$1
     tr -d \\r < $FILE > tmp && \
-    which mv
+    echo mv command is from fpc? $(which mv)
     /usr/bin/mv tmp $FILE
 }
 
