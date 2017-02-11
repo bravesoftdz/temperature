@@ -37,6 +37,7 @@ then
         ls ultibo-rtl-update/Core-master/source/rtl/ultibo
     
         appveyor AddMessage "moving ultibo rtl source into ultibo core folder"
+        ls $ULTIBO_SOURCE/rtl
         ls $ULTIBO_SOURCE/rtl/ultibo
         rm -rf $ULTIBO_SOURCE/rtl/ultibo
         cp -a ultibo-rtl-update/Core-master/source/rtl/ultibo $ULTIBO_SOURCE/rtl/ultibo
