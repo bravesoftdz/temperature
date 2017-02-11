@@ -48,7 +48,10 @@ then
     fi
 
     du -sk /c/Ultibo
+    mv /c/Ultibo/Core/fpc/3.1.1/source/packages/fv/src fv-src
     rm -r /c/Ultibo/Core/fpc/3.1.1/source
+    mkdir -p /c/Ultibo/Core/fpc/3.1.1/source/packages/fv
+    mv fv-src /c/Ultibo/Core/fpc/3.1.1/source/packages/fv/src
     du -sk /c/Ultibo
 
     appveyor AddMessage "ultibo installation complete"
