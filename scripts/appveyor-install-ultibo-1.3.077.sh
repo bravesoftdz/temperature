@@ -17,7 +17,7 @@ then
     rm -r /c/Ultibo/Core/docs
     rm -r /c/Ultibo/Core/examples
     rm -r /c/Ultibo/Core/firmware
-    rm -r /c/Ultibo/Core/fpc/3.1.1/source
+#   rm -r /c/Ultibo/Core/fpc/3.1.1/source
     rm -r /c/Ultibo/Core/fpc/3.1.1/units/armv8-ultibo
     rm -r /c/Ultibo/Core/languages
     rm -r /c/Ultibo/Core/tools
@@ -37,7 +37,6 @@ then
         ls ultibo-rtl-update/Core-master/source/rtl/ultibo
     
         appveyor AddMessage "moving ultibo rtl source into ultibo core folder"
-        ls $ULTIBO_SOURCE/rtl
         ls $ULTIBO_SOURCE/rtl/ultibo
         rm -rf $ULTIBO_SOURCE/rtl/ultibo
         cp -a ultibo-rtl-update/Core-master/source/rtl/ultibo $ULTIBO_SOURCE/rtl/ultibo
