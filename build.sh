@@ -1,6 +1,7 @@
 #!/bin/bash
 
-find /c/Ultibo/Core -iname platform.inc
+/usr/bin/find /c/Ultibo/Core -iname platform.inc
+exit
 
 #INSTALL_PATH=/root/ultibo/core/fpc/bin/
 INSTALL_PATH=/c/Ultibo/Core/fpc/3.1.1/bin/i386-win32
